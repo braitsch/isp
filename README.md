@@ -1,4 +1,6 @@
-comcast-system-status
-=====================
+Comcast System Status
+===========
 
-Publicly Sourced Realtime Visualization of Comcast's System Status in Your Area
+Find out if your area has lost service without the bother of calling Comcast or dealing with their online tech support.
+
+Coming Soon.
