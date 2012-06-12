@@ -1,18 +1,17 @@
 
 $(document).ready(function(){
 
-	window.map = new Map('map_canvas');
-	
+	if (!window.map) var map = new Map();
+
 	var loc = new LocationDetector(function(e, pos){
 		if (e){
 			console.log(e);
 		}	else{
-			window.map.addThisUser(pos);
-			window.map.addSavedUsers(pos);
+			map.setUser(pos);
+	//		Map.addSavedUsers(pos);
 		}
 	});
 	
 	// get database users from jade template ...
-
 	
 });

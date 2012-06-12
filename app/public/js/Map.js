@@ -1,82 +1,115 @@
 
-var searchArea = 1; // 1 mile
-
-Map = function(div)
-{ 
-	this.div = document.getElementById(div)
-	this.map = new google.maps.Map(this.div, {
-		zoom : 15,
+Map = function()
+{
+	var pos = { lat : 0, lng : 0 };
+	var searchArea = 1; // 1 mile
+	var div = document.getElementById('map_canvas')
+	var map = new google.maps.Map(div, {
+		zoom : 13,
 		mapTypeId : google.maps.MapTypeId.ROADMAP
 	});
 	
 	var ua = navigator.userAgent;
 	if (ua.indexOf('iPhone') != -1 || ua.indexOf('Android') != -1 ) {
-		this.div.style.width = '600px';
-		this.div.style.height = '800px';
+		div.style.width = '600px';
+		div.style.height = '800px';
 	} else {
-		this.div.style.width = '100%';
-		this.div.style.height = '100%';
+		div.style.width = '100%';
+		div.style.height = '100%';
 	}
-}
-
-Map.prototype.addThisUser = function(pos)
-{
-	this.drawRectangle(pos.lat, pos.lng)
-	this.drawCircle(pos.lat, pos.lng);
-	this.addMarker(pos.lat, pos.lng);
-	this.addMarker(pos.lat + Map.calcMilesToLatDegrees(searchArea/2), pos.lng);
-	this.addMarker(pos.lat - Map.calcMilesToLatDegrees(searchArea/2), pos.lng);
-	this.addMarker(pos.lat, pos.lng - Map.calcMilesToLngDegrees(pos.lat, searchArea/2));
-	this.addMarker(pos.lat, pos.lng + Map.calcMilesToLngDegrees(pos.lat, searchArea/2));
-	this.map.setCenter(new google.maps.LatLng(pos.lat, pos.lng));
-}
-
-Map.prototype.addSavedUsers = function(pos)
-{
-
-}
-
-Map.prototype.addMarker = function(lat, lng)
-{
-	var mrkr = new google.maps.Marker({
-		map : this.map,
-		title : 'xyz',
-		position : new google.maps.LatLng(lat, lng),
-		animation : google.maps.Animation.DROP
-	});
-	google.maps.event.addListener(mrkr, 'click', function(e) {
-		console.log('clicked');
+	google.maps.event.addListener(map, 'click', function(e) {
+		addMarker(e.latLng.lat(), e.latLng.lng());
 	});	
-}
 
-Map.prototype.drawCircle = function(lat, lng)
-{
-	new google.maps.Circle({
-		map: this.map,
-		strokeColor: "#FF0000",
-		strokeOpacity: 0.8,
-		strokeWeight: 2,
-		fillColor: "#FF0000",
-		fillOpacity: 0.35,
-		radius: Map.calcMilesToMeters(searchArea / 2),
-		center: new google.maps.LatLng(lat, lng)
+	
+// public methods //	
+	
+	this.setUser = function(obj)
+	{
+		pos = obj;
+		drawPoints();
+		drawCircle();
+		drawBounds();
+		addMarker(pos.lat, pos.lng);
+		map.setCenter(new google.maps.LatLng(pos.lat, pos.lng));	
+	}
+	
+	this.addUser = function(a)
+	{
+
+	}
+	
+	var clickCount = 0;
+	var addMarker = function(lat, lng)
+	{
+		var mrkr = new google.maps.Marker({
+			map : map,
+			title : 'xyz',
+			position : new google.maps.LatLng(lat, lng),
+			animation : google.maps.Animation.DROP
+		});
+		google.maps.event.addListener(mrkr, 'click', function(e) {
+			clickCount++;
+			var color = clickCount%2==0 ? 'map_window_yellow': 'map_window_dark';
+			win.setOptions({ boxClass : color });
+			win.open(map, mrkr);					
+		});
+	}
+	
+	var drawPoints = function()
+	{
+		addMarker(pos.lat + Map.calcMilesToLatDegrees(searchArea/2), pos.lng);
+		addMarker(pos.lat - Map.calcMilesToLatDegrees(searchArea/2), pos.lng);
+		addMarker(pos.lat, pos.lng - Map.calcMilesToLngDegrees(pos.lat, searchArea/2));
+		addMarker(pos.lat, pos.lng + Map.calcMilesToLngDegrees(pos.lat, searchArea/2));	
+	}
+
+	var drawCircle = function()
+	{
+		new google.maps.Circle({
+			map: map,
+			strokeColor: "#FF0000",
+			strokeOpacity: 0.8,
+			strokeWeight: 2,
+			fillColor: "#FF0000",
+			fillOpacity: 0.35,
+			radius: Map.calcMilesToMeters(searchArea / 2),
+			center: new google.maps.LatLng(pos.lat, pos.lng)
+		});
+	}
+
+	var drawBounds = function()
+	{
+		var sw = new google.maps.LatLng(pos.lat - Map.calcMilesToLatDegrees(searchArea/2), pos.lng - Map.calcMilesToLngDegrees(pos.lat, searchArea/2));
+		var ne = new google.maps.LatLng(pos.lat + Map.calcMilesToLatDegrees(searchArea/2), pos.lng + Map.calcMilesToLngDegrees(pos.lat, searchArea/2));
+		var rect = new google.maps.Rectangle({
+			map: map,
+			strokeColor: "#FF0000",
+			strokeOpacity: 0.8,
+			strokeWeight: 2,
+			fillColor: "#FF0000",
+			fillOpacity: 0.35,
+			bounds: new google.maps.LatLngBounds(sw, ne)
+		});
+	}
+	
+	var win = new InfoBox({
+		content: document.getElementById('map_window'),
+		disableAutoPan: false,
+		maxWidth: 0,
+		pixelOffset: new google.maps.Size(-95, -110),
+		zIndex: null,
+		closeBoxMargin: "10px",
+		closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+		infoBoxClearance: new google.maps.Size(1, 1),
+		isHidden: false,
+		pane: "floatPane",
+		enableEventPropagation: false
 	});
+
 }
 
-Map.prototype.drawRectangle = function(lat, lng)
-{
-	var sw = new google.maps.LatLng(lat - Map.calcMilesToLatDegrees(searchArea/2), lng - Map.calcMilesToLngDegrees(lat, searchArea/2));
-	var ne = new google.maps.LatLng(lat + Map.calcMilesToLatDegrees(searchArea/2), lng + Map.calcMilesToLngDegrees(lat, searchArea/2));
-	var rect = new google.maps.Rectangle({
-		map: this.map,		
-		strokeColor: "#FF0000",
-		strokeOpacity: 0.8,
-		strokeWeight: 2,
-		fillColor: "#FF0000",
-		fillOpacity: 0.35,
-		bounds: new google.maps.LatLngBounds(sw, ne)
-	});	
-}
+// static methods //
 
 Map.calcMilesToMeters = function(m)
 {
@@ -92,7 +125,5 @@ Map.calcMilesToLngDegrees = function(lat, m)
 }
 Map.degreesToRadians = function(d)
 {
-	return d * (Math.PI/180)
+	return d * (Math.PI / 180);
 }
-
-	
