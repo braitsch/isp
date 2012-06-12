@@ -1,7 +1,7 @@
 {
     "name": "comcast-system-status",
     "version": "1.0.0",
-    "description": "Crowd Sourced Realtime Visualization of Comcast's System Status in Your Area",
+    "description": "Publicly Sourced Realtime Visualization of Comcast's System Status in Your Area",
     "author": {
         "name": "Stephen Braitsch",
         "email": "stephen@quietless.com"

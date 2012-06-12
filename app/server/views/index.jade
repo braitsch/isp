@@ -1,3 +1,6 @@
+// store data from express in hidden field for js //
+input(type='hidden', value=JSON.stringify(ip))#ip
+
 !!! 5
 html
 	head
@@ -6,6 +9,8 @@ html
 		#map_canvas
 		script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
 		script(type='text/javascript', src='http://maps.googleapis.com/maps/api/js?key=AIzaSyBmtAAD8JH92Xfq917W9Ejpg7qMPLDoyJU&sensor=true')
-		script(type='text/javascript', src='./js/map-maker.js')
+		script(type='text/javascript', src='./js/Map.js')
+		script(type='text/javascript', src='./js/LocationDetector.js')
+		script(type='text/javascript', src='./js/index.js')
 
 include footer
