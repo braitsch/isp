@@ -9,14 +9,6 @@ Map = function()
 		mapTypeId : google.maps.MapTypeId.ROADMAP
 	});
 	
-	var ua = navigator.userAgent;
-	if (ua.indexOf('iPhone') != -1 || ua.indexOf('Android') != -1 ) {
-		div.style.width = '600px';
-		div.style.height = '800px';
-	} else {
-		div.style.width = '100%';
-		div.style.height = '100%';
-	}
 	google.maps.event.addListener(map, 'click', function(e) {
 		addMarker(e.latLng.lat(), e.latLng.lng());
 	});	
