@@ -1,6 +1,8 @@
 
 $(document).ready(function(){
 
+	console.log('ip = '+ipAddress);
+
 	if (!window.map) var map = new Map();
 
 	var loc = new LocationDetector(function(e, pos){
