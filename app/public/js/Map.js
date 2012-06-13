@@ -1,11 +1,17 @@
 
+var icons = {
+	ok : [],
+	fail : ['mummy', 'zombie'] 
+}
+
 Map = function()
 {
 	var pos = { lat : 0, lng : 0 };
 	var searchArea = 1; // 1 mile
 	var div = document.getElementById('map_canvas')
 	var map = new google.maps.Map(div, {
-		zoom : 13,
+		zoom : 14,
+		disableDefaultUI : true,
 		mapTypeId : google.maps.MapTypeId.ROADMAP
 	});
 	
@@ -20,8 +26,8 @@ Map = function()
 	{
 		pos = obj;
 		drawPoints();
-		drawCircle();
-		drawBounds();
+	//	drawCircle();
+	//	drawBounds();
 		addMarker(pos.lat, pos.lng);
 		map.setCenter(new google.maps.LatLng(pos.lat, pos.lng));	
 	}
@@ -34,9 +40,11 @@ Map = function()
 	var clickCount = 0;
 	var addMarker = function(lat, lng)
 	{
+		var i = Math.floor(Math.random()*icons.fail.length);
 		var mrkr = new google.maps.Marker({
 			map : map,
 			title : 'xyz',
+			icon : './img/markers/'+icons.fail[i]+'.png',
 			position : new google.maps.LatLng(lat, lng),
 			animation : google.maps.Animation.DROP
 		});

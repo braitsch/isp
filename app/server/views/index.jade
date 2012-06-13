@@ -6,14 +6,14 @@ html
 	head
 		meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
 	body
-		#map_canvas
+		#map_cnt
+			#map_canvas
+		#map_window
 		script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
 		script(type='text/javascript', src='http://maps.googleapis.com/maps/api/js?key=AIzaSyBmtAAD8JH92Xfq917W9Ejpg7qMPLDoyJU&sensor=true')
 		script(type='text/javascript', src='/vendor/infobox_packed.js')
 		script(type='text/javascript', src='./js/Map.js')
 		script(type='text/javascript', src='./js/LocationDetector.js')
 		script(type='text/javascript', src='./js/index.js')
-		#map_window
-			p hello
 
 include footer

@@ -1,9 +1,24 @@
+body {
+  background-color: #ccc;
+}
+body,
 html {
   height: 100%;
-}
-body {
-  height: 100%;
+  margin: 0;
   padding: 0;
+}
+#map_cnt {
+  display: block;
+  position: absolute;
+  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-bottom: 40px;
 }
 #map_canvas {
   width: 100%;
@@ -13,10 +28,16 @@ body {
   max-width: none;
 }
 #footer {
-  position: relative;
+  display: block;
+  position: absolute;
   height: 40px;
-  margin-top: -40px;
-  background-color: #ddd;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: auto;
+  background-color: #ccc;
 }
 #credit {
   font-size: 0.9em;
@@ -27,7 +48,7 @@ body {
   padding: 20px;
 }
 #map_window {
-  width: 300px;
+  width: 260px;
   height: 60px;
 }
 #map_window p {
