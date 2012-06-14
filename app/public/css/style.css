@@ -1,5 +1,5 @@
 body {
-  background-color: #ccc;
+  background-color: #d7dada;
 }
 body,
 html {
@@ -15,6 +15,7 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
+  border: 1px solid #fff;
   margin-top: 20px;
   margin-right: 20px;
   margin-left: 20px;
@@ -37,7 +38,7 @@ html {
   margin-left: 20px;
   margin-right: 20px;
   width: auto;
-  background-color: #ccc;
+  background-color: #d7dada;
 }
 #credit {
   font-size: 0.9em;
