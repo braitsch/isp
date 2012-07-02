@@ -20,7 +20,7 @@ Map = function()
 	});	
 
 	
-// public methods //	
+// public methods //
 	
 	this.setUser = function(obj)
 	{
@@ -29,7 +29,7 @@ Map = function()
 	//	drawCircle();
 	//	drawBounds();
 		addMarker(pos.lat, pos.lng);
-		map.setCenter(new google.maps.LatLng(pos.lat, pos.lng));	
+		map.setCenter(new google.maps.LatLng(pos.lat, pos.lng));
 	}
 	
 	this.addUser = function(a)

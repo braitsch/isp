@@ -1,20 +1,43 @@
 
-div(data-role='page')
-	div(data-role='header')
-		h1 Comcast System Status
-	div(data-role='content')
-		ul(data-role='listview', data-inset='true')
-			li
-				a(href='#') one
-			li
-				a(href='#') two
-			li
-				a(href='#') three
-			li
-				a(href='#') four
-			li
-				a(href='#') five
+#header
+	#isp-dropdown.btn-group
+		button#isp-dropdown-label.btn.btn-info Comcast
+			button.btn.btn-info.dropdown-toggle(data-toggle='dropdown')
+				span.caret
+			ul.dropdown-menu
+				li 
+					a(href='#') Comcast
+				li
+					a(href='#') AT&T
 
-script(src='/vendor/jquery-1.7.2.min.js')
-script(src='/vendor/jquery.mobile-1.1.0.min.js')
+	button#btn-home.btn.btn-info
+		i.icon-home.icon-white
+	button#btn-info.btn.btn-info
+		i.icon-info-sign.icon-white
+
+#welcome1.modal.hide
+	.modal-header
+		h3 Hello!
+	.modal-body
+		p x
+	.modal-footer
+		button#service-ok.btn.btn-success It's Great!
+		button#no-service.btn.btn-danger It Sucks!
+#welcome2.modal.show
+	.modal-header
+		h3 Step 2 of 2
+	.modal-body
+		p I'm sorry to hear you're having problems.<br>
+			| Who is your Internet Service Provider?
+		#isp-selector
+			button.btn.btn-success Comcast
+			button.btn.btn-success AT&T
+	.modal-footer
+		button#check-status.btn.btn-success Check Status
+
+script(src='/vendor/js/jquery-1.7.2.min.js')
+script(src='/vendor/js/bootstrap-modal.js')
+script(src='/vendor/js/bootstrap-dropdown.js')
+script(src='http://maps.googleapis.com/maps/api/js?key=AIzaSyBmtAAD8JH92Xfq917W9Ejpg7qMPLDoyJU&sensor=true')
+script(src='/js/LocationDetector.js')
 script(src='/js/mobile.js')
