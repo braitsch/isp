@@ -2,23 +2,48 @@
 GoogleMap = function()
 {
 	var searchArea = 1; // 1 mile
-	var div = document.getElementById('map_canvas')
-	var map = new google.maps.Map(div, {
+	var map = new google.maps.Map(document.getElementById('map_canvas'), {
 		zoom : 14,
 		disableDefaultUI : true,
 		mapTypeId : google.maps.MapTypeId.ROADMAP
 	});
-	google.maps.event.addListener(map, 'click', function(e) {
-		addMarker(e.latLng.lat(), e.latLng.lng());
+	var win = new InfoBox({
+		content: document.getElementById('map_window'),
+		disableAutoPan: false,
+		maxWidth: 0,
+		pixelOffset: new google.maps.Size(-95, -110),
+		zIndex: null,
+		closeBoxMargin: "10px",
+		closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+		infoBoxClearance: new google.maps.Size(1, 1),
+		isHidden: false,
+		pane: "floatPane",
+		enableEventPropagation: false
 	});
+	
+	// var timeout;
+	// google.maps.event.addListener(map, 'bounds_changed', function() {
+	// 	if (timeout) clearTimeout(timeout);
+	// 	timeout = setTimeout(function(){
+	// 		var bnds = map.getBounds()
+	// 		var ne = bnds.getNorthEast();
+	// 		var sw = bnds.getSouthWest();
+	// 		console.log('ne = ', ne.lat(), ne.lng());
+	// 		console.log('sw = ', sw.lat(), sw.lng());
+	// 	}, 100);
+	// });
+	
+	// google.maps.event.addListener(map, 'click', function(e) {
+	// 	addMarker(e.latLng.lat(), e.latLng.lng());
+	// });	
 
 // public methods //
 	
     Object.defineProperty(this, 'location', {set: function(point) {
 		addMarker(point.lat, point.lng);
-		drawPoints(point.lat, point.lng);
+	//	drawPoints(point.lat, point.lng);
 		drawCircle(point.lat, point.lng);
-		drawBounds(point.lat, point.lng);
+	//	drawBounds(point.lat, point.lng);
 		map.setCenter(new google.maps.LatLng(point.lat, point.lng));
 	}});
 	
@@ -76,20 +101,6 @@ GoogleMap = function()
 			bounds: new google.maps.LatLngBounds(sw, ne)
 		});
 	}
-
-	var win = new InfoBox({
-		content: document.getElementById('map_window'),
-		disableAutoPan: false,
-		maxWidth: 0,
-		pixelOffset: new google.maps.Size(-95, -110),
-		zIndex: null,
-		closeBoxMargin: "10px",
-		closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
-		infoBoxClearance: new google.maps.Size(1, 1),
-		isHidden: false,
-		pane: "floatPane",
-		enableEventPropagation: false
-	});
 
 }
 
