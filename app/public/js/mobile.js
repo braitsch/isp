@@ -1,14 +1,17 @@
 
 $(document).ready(function(){
 
+// user specific variables //
+	var ip, isp, loc, status;
+
 	var w1 =$('#welcome1');
 	var w2 =$('#welcome2');
 	
-	var isps = ['Comcast', 'AT&T', 'Other'];
+	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
 		
 	function onIspSelection(e)
 	{
-		var isp = $(e.target).text();
+		isp = $(e.target).text();
 		$('#isp-dropdown-label').text(isp);
 	}
 	
@@ -45,10 +48,26 @@ $(document).ready(function(){
 	
 	function onW1Click(e)
 	{
-		var s = $(e.target).attr('id');
+		status = $(e.target).attr('id') === 'service-ok' ? 1 : 0;
 		w1.modal('hide');
+	// build isp list based on location //
+		$('#isp-selector').empty();
+		$('#isp-dropdown ul').empty();
+		for (var i=0; i < isps.length; i++)  {
+			$('#isp-selector').append("<button class='btn'>"+isps[i]+"</button>");
+			$('#isp-dropdown ul').append("<li><a href='#'>"+isps[i]+"</a></li>");
+		};
+		$('#isp-selector button').click(function(e){
+			var target = e.target; onIspSelection(e);
+			$('#isp-selector button').each(function(n, o){
+				if (o != target){
+					$(o).attr('class', 'btn');
+				}	else{
+					$(o).attr('class', 'btn btn-success');
+				}
+			})
+		})
 		w2.modal('show');
-		w2.find('.modal-body p').html(s);
 	}
 
 // global nav //
@@ -60,7 +79,8 @@ $(document).ready(function(){
 	w1.modal({ show : false, keyboard : false, backdrop : 'static' });
 	w1.find('button').click(onW1Click);
 	w2.modal({ show : false, keyboard : false, backdrop : 'static' });
+	w2.find('#check-status').click(function(){ w2.modal('hide'); });
 
-//	detectLocation();
+	detectLocation();
 
 });
