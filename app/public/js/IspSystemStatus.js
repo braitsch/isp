@@ -45,6 +45,7 @@ $(document).ready(function(){
 	
 	function writeToDatabase()
 	{
+		console.log('location = ', loc.lat, loc.lng)
 		$.ajax({
 			url: '/user',
 			type : "POST",
