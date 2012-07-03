@@ -1,6 +1,5 @@
-Comcast System Status
-===========
+##Internet Service Provider System Status
 
-Find out if your area has lost service without the bother of calling Comcast or dealing with their online tech support.
+####Quickly find out if your area has lost service without the bother of calling your ISP or dealing with their online tech support.
 
 Coming Soon.

@@ -11,6 +11,10 @@
 	button#btn-info.btn.btn-info
 		i.icon-info-sign.icon-white
 
+#map_cnt
+	#map_canvas
+#map_window
+
 #modal-wel1.modal.hide
 	.modal-header
 		h3 Hello!
@@ -44,9 +48,13 @@
 	.modal-footer
 		button(data-dismiss='modal').btn.btn-success OK
 
+include footer
+
 script(src='/vendor/js/jquery-1.7.2.min.js')
 script(src='/vendor/js/bootstrap-modal.js')
 script(src='/vendor/js/bootstrap-dropdown.js')
 script(src='http://maps.googleapis.com/maps/api/js?key=AIzaSyBmtAAD8JH92Xfq917W9Ejpg7qMPLDoyJU&sensor=true')
+script(src='/vendor/js/infobox_packed.js')
+script(src='/js/GoogleMap.js')
 script(src='/js/LocationDetector.js')
-script(src='/js/mobile.js')
+script(src='/js/IspSystemStatus.js')

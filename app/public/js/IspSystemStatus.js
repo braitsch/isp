@@ -2,7 +2,8 @@
 $(document).ready(function(){
 
 // user specific variables //
-	var ip, isp, loc, status;
+	var isp, status;
+	console.log('ip = '+ipAddress);
 
 	var w1 = $('#modal-wel1');
 	var w2 = $('#modal-wel2');
@@ -10,7 +11,8 @@ $(document).ready(function(){
 	var m2 = $('#modal-info');
 	
 	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
-		
+
+	var map = new GoogleMap();
 	var loc = new LocationDetector();
 	loc.getLocation(onLocationDetected);
 	
@@ -24,6 +26,7 @@ $(document).ready(function(){
 			)
 			w1.modal('show');
 			w1.find('button').click(onW1Click);
+			map.location = {lat : loc.lat, lng : loc.lng};
 		}
 	}
 
@@ -70,7 +73,7 @@ $(document).ready(function(){
 	$('#btn-home').click(function(){ m1.modal('show'); });
 	$('#btn-info').click(function(){ m2.modal('show'); });
 	
-// modal window //
+// modal windows //
 	w1.modal({ show : false, keyboard : false, backdrop : 'static' });
 	w2.modal({ show : false, keyboard : false, backdrop : 'static' });
 	m1.modal({ show : false, keyboard : true, backdrop : true });

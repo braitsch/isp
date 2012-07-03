@@ -3,15 +3,42 @@ body {
 }
 body,
 html {
-  height: 100%;
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+#header {
+  width: 100%;
+  height: 40px;
+  display: none;
+  background-color: #333;
+}
+#btn-home {
+  top: 5px;
+  right: 55px;
+  position: absolute;
+}
+#btn-info {
+  top: 5px;
+  right: 10px;
+  position: absolute;
+}
+#isp-dropdown {
+  top: 5px;
+  left: 10px;
+  position: absolute;
+}
+#isp-dropdown .dropdown-menu {
+  min-width: 100px;
+}
+#isp-dropdown-label {
+  min-width: 76px;
 }
 #map_cnt {
   display: block;
   position: absolute;
   height: auto;
-  top: 0;
+  top: 40px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -24,29 +51,10 @@ html {
 #map_canvas {
   width: 100%;
   height: 100%;
+  background-color: #333;
 }
 #map_canvas img {
   max-width: none;
-}
-#footer {
-  display: block;
-  position: absolute;
-  height: 40px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin-left: 20px;
-  margin-right: 20px;
-  width: auto;
-  background-color: #d7dada;
-}
-#credit {
-  font-size: 0.9em;
-  text-align: center;
-  padding-top: 10px;
-}
-#nfnd {
-  padding: 20px;
 }
 #map_window {
   width: 260px;
@@ -101,4 +109,57 @@ html {
   display: block;
   width: 0;
   border-color: #ccc transparent;
+}
+#footer {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: auto;
+  height: 40px;
+  background-color: #d7dada;
+}
+#credit {
+  font-size: 0.9em;
+  text-align: center;
+  padding-top: 10px;
+}
+.modal-body {
+  padding-bottom: 0;
+  text-align: center;
+}
+.modal-body #isp-selector {
+  margin: 10px auto;
+  width: 100px;
+}
+.modal-body button {
+  display: block;
+  width: 100px;
+  margin-bottom: 14px;
+}
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  .modal {
+    width: 300px;
+  }
+  #btn-info {
+    right: 5px;
+  }
+  #btn-home {
+    right: 45px;
+  }
+  #isp-dropdown {
+    left: 5px;
+  }
+  #map_cnt {
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+  #footer {
+    display: none;
+  }
 }
