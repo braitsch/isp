@@ -11,32 +11,26 @@ $(document).ready(function(){
 	
 	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
 		
+	var loc = new LocationDetector();
+	loc.getLocation(onLocationDetected);
+	
+	function onLocationDetected(ok, e)
+	{
+		if (e){
+			console.log(e);
+		} else{
+			w1.find('.modal-body p').html(
+				"It looks like you're in beautiful<br><span style='color:#27A3FA'>"+loc.city +', '+ loc.state+"</span><br>How's your Internet connection today?"
+			)
+			w1.modal('show');
+			w1.find('button').click(onW1Click);
+		}
+	}
+
 	function onIspSelection(e)
 	{
 		isp = $(e.target).text();
 		$('#isp-dropdown-label').text(isp);
-	}
-	
-	function detectLocation()
-	{
-		var loc = new LocationDetector(function(e, a){
-			if (e){
-				console.log(e);
-			}	else{
-				var c, s;
-				for (var i = a.address_components.length - 1; i >= 0; i--){
-					var n = a.address_components[i];
-					if (n['types'][0] == 'administrative_area_level_1') s = n['long_name'];
-					if (n['types'][0] == 'administrative_area_level_3') c = n['long_name'];
-					if (n['types'][0] == 'administrative_area_level_2' && !c) c = n['long_name'];
-				};
-				w1.find('.modal-body p').html(
-					"It looks like you're in beautiful<br><span style='color:#27A3FA'>"+c +', '+ s+"</span><br>How's your Internet connection today?"
-				)
-				w1.modal('show');
-				w1.find('button').click(onW1Click);
-			}
-		});
 	}
 	
 	function onW1Click(e)
@@ -81,6 +75,5 @@ $(document).ready(function(){
 	w2.modal({ show : false, keyboard : false, backdrop : 'static' });
 	m1.modal({ show : false, keyboard : true, backdrop : true });
 	m2.modal({ show : false, keyboard : true, backdrop : true });
-	detectLocation();
 
 });
