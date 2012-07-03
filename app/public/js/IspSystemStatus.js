@@ -12,15 +12,14 @@ $(document).ready(function(){
 	var map = new GoogleMap();
 	var mdl = new ModalController();
 	
-	mdl.addListener('onIspChanged', function(e){
-		onIspSelection(e);
-	});
-	mdl.addListener('onStatusChanged', function(e){
-		status = e;
-		console.log('status = ' + status);
-	});
-	
 	loc.getLocation(onLocationDetected);
+	
+	mdl.addListener('onIspSelected', function(el){
+		onIspSelection(el);
+		writeToDatabase();
+		$('#header').show();
+	});
+	mdl.addListener('onStatusSelected', function(e){ status = e; });
 	
 	function onLocationDetected(ok, e)
 	{
@@ -28,7 +27,7 @@ $(document).ready(function(){
 			console.log(e);
 		} else{
 			drawISPList();
-			mdl.showLocation(loc.city, loc.state, isps);
+			mdl.setLocation(loc.city, loc.state, isps);
 			map.location = {lat : loc.lat, lng : loc.lng};
 		}
 	}
@@ -39,16 +38,28 @@ $(document).ready(function(){
 		for (var i=0; i < isps.length; i++) $('#isp-dropdown ul').append("<li><a href='#'>"+isps[i]+"</a></li>");
 	}
 
-	function onIspSelection(e)
+	function onIspSelection(el)
 	{
-		isp = $(e.target).text();
+		isp = $(el).text();
 		$('#isp-dropdown-label').text(isp);
+	}
+	
+	function writeToDatabase()
+	{
+		var o = {
+			ip : ipAddress,
+			isp : isp,
+			status : status,
+			city : loc.city,
+			state : loc.state,
+			time : Date.now()
+		}
+		console.log('writeToDatabase', o);
 	}
 
 // global nav //
-	$('#isp-dropdown ul').click(onIspSelection);
 	$('#btn-home').click(function(){ mdl.showHome(); });
 	$('#btn-info').click(function(){ mdl.showInfo(); });
-
+	$('#isp-dropdown ul').click(function(e){ onIspSelection(e.target); });
 
 });
