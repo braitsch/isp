@@ -11,7 +11,7 @@
 	button#btn-info.btn.btn-info
 		i.icon-info-sign.icon-white
 
-#welcome1.modal.hide
+#modal-wel1.modal.hide
 	.modal-header
 		h3 Hello!
 	.modal-body
@@ -19,15 +19,30 @@
 	.modal-footer
 		button#service-ok.btn.btn-success It's Great!
 		button#no-service.btn.btn-danger It Sucks!
-#welcome2.modal.hide
+#modal-wel2.modal.hide
 	.modal-header
 		h3 Step 2 of 2
 	.modal-body
-		p I'm sorry to hear you're having problems.<br>
-			| Who is your Internet Service Provider?
+		p
 		#isp-selector
 	.modal-footer
-		button#check-status.btn.btn-success Check Status
+		button#check-status.btn.btn-success.disabled Check Status
+#modal-home.modal.hide
+	.modal-header
+		button.close(data-dismiss='modal') x
+		h3 Home
+	.modal-body
+		p change status / isp settings
+	.modal-footer
+		button(data-dismiss='modal').btn.btn-success OK
+#modal-info.modal.hide
+	.modal-header
+		button.close(data-dismiss='modal') x
+		h3 Info
+	.modal-body
+		p about this project
+	.modal-footer
+		button(data-dismiss='modal').btn.btn-success OK
 
 script(src='/vendor/js/jquery-1.7.2.min.js')
 script(src='/vendor/js/bootstrap-modal.js')
