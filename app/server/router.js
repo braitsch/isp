@@ -13,8 +13,8 @@ module.exports = function(app) {
 			ip	: req.connection.remoteAddress,
 			isp : req.param('isp'),
 			status : req.param('status'),
-			city : req.param('city'),
-			state : req.param('state'),
+			lat : req.param('lat'),
+			lng : req.param('lng'),
 			time : Date.now()
 		}, function(e){
 			if (e) res.send('ok', 200);

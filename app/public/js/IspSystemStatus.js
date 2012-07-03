@@ -48,7 +48,7 @@ $(document).ready(function(){
 		$.ajax({
 			url: '/user',
 			type : "POST",
-			data : { isp : isp, status : status, city : loc.city, state : loc.state },
+			data : { isp : isp, status : status, lat : loc.lat, lng : loc.lng },
 			success: function(data){
 				console.log('ok');
 			},
