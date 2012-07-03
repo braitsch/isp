@@ -4,9 +4,8 @@ $(document).ready(function(){
 // from the database based on location ...
 	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
 
-// user specific variables //
+// user generated variables //
 	var isp, status;
-	console.log('ip = '+ipAddress);
 
 	var loc = new LocationDetector();
 	var map = new GoogleMap();
@@ -46,15 +45,17 @@ $(document).ready(function(){
 	
 	function writeToDatabase()
 	{
-		var o = {
-			ip : ipAddress,
-			isp : isp,
-			status : status,
-			city : loc.city,
-			state : loc.state,
-			time : Date.now()
-		}
-		console.log('writeToDatabase', o);
+		$.ajax({
+			url: '/user',
+			type : "POST",
+			data : { isp : isp, status : status, city : loc.city, state : loc.state },
+			success: function(data){
+				console.log('ok');
+			},
+			error: function(jqXHR){
+				console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText);
+			}
+		});
 	}
 
 // global nav //

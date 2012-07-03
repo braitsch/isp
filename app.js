@@ -1,12 +1,13 @@
 
 /**
- * Node.js Comcast System Status
+ * Node.js Internet System Status
  * Author :: Stephen Braitsch
  */
 
 var exp = require('express');
 var app = exp.createServer();
 
+global.host = 'localhost';
 app.root = __dirname;
 
 require('./app/config')(app, exp);

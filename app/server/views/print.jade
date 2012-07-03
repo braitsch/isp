@@ -1,0 +1,26 @@
+
+body(style='background-color:white;')
+	div(style='margin:20px;')
+		#print-usrs
+			table.table.table-bordered.table-striped
+				thead
+					tr
+						th #
+						th Ip Address
+						th Internet Provider
+						th Status
+						th City
+						th State
+						th Date Created
+				tbody
+				- for (var i = 0; i < users.length; i++)
+					tr
+						td= i+1
+						td= users[i].ip
+						td= users[i].isp
+						td= users[i].status
+						td= users[i].city
+						td= users[i].state
+						td= users[i].time
+
+script(src='/vendor/js/jquery-1.7.2.min.js')
