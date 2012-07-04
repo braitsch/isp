@@ -57,6 +57,7 @@ html {
   max-width: none;
 }
 #map_window {
+  display: none;
   width: 260px;
   margin: 12px 10px 12px 10px;
 }
