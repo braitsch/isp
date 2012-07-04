@@ -67,7 +67,7 @@ ModalController = function()
 	{
 		if (w2.find('#check-status').hasClass('disabled') == false){
 			$('#isp-selector button').each(function(n, o){
-				if ($(o).hasClass('btn-success')) dispatch('onIspSelected', o);
+				if ($(o).hasClass('btn-success')) dispatch('onIspSelected', $(o).text());
 			});
 			w2.modal('hide');
 		}

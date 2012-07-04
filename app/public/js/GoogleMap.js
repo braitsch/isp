@@ -39,32 +39,33 @@ GoogleMap = function()
 
 // public methods //
 	
-    Object.defineProperty(this, 'location', {set: function(point) {
-		addMarker(point.lat, point.lng);
-	//	drawPoints(point.lat, point.lng);
-		drawCircle(point.lat, point.lng);
-	//	drawBounds(point.lat, point.lng);
-		map.setCenter(new google.maps.LatLng(point.lat, point.lng));
+    Object.defineProperty(this, 'location', {set: function(obj) {
+		addMarker(obj, true);
+		drawCircle(obj.lat, obj.lng);
+		map.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 	}});
 	
-	var clickCount = 0;
-	var addMarker = function(lat, lng)
+	var addMarker = function(obj, isMe)
 	{
 		var mrkr = new google.maps.Marker({
 			map : map,
-			title : 'xyz',
+			isp : obj.isp,
+			status : obj.status,
+			time : obj.time,
+			special : isMe,
 			// icon : './img/markers/'+icons.fail[i]+'.png',
-			position : new google.maps.LatLng(lat, lng),
+			position : new google.maps.LatLng(obj.lat, obj.lng),
 			animation : google.maps.Animation.DROP
 		});
 		google.maps.event.addListener(mrkr, 'click', function(e) {
-			clickCount++;
-			var color = clickCount%2==0 ? 'map_window_yellow': 'map_window_dark';
-			win.setOptions({ boxClass : color });
+			var status = "<span style='color:"+(mrkr.status==1 ? 'green' : 'red')+"'>"+(mrkr.status==1 ? 'good' : 'bad')+"</span>";
+			$('#map_window #isp').html(mrkr.isp + ' : '+status);
+			$('#map_window #time').html('last updated : ' +mrkr.time);
+			win.setOptions({ boxClass : (mrkr.special ? 'map_window_yellow': 'map_window_dark') });
 			win.open(map, mrkr);
 		});
 	}
-	
+
 	var drawPoints = function(lat, lng)
 	{
 		addMarker(lat + GoogleMap.calcMilesToLatDegrees(searchArea/2), lng);

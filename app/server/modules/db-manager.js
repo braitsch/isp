@@ -20,7 +20,6 @@ module.exports = DBM;
 
 DBM.setUser = function(newObj, callback)
 {
-	console.log(newObj.lat, newObj.lng)
 	DBM.users.findOne({ip:newObj.ip}, function(e, oldObj){
 		if (oldObj == null){
 			DBM.users.insert(newObj, callback(newObj));

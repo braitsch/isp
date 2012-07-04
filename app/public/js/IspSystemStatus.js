@@ -13,10 +13,13 @@ $(document).ready(function(){
 	
 	loc.getLocation(onLocationDetected);
 	
-	mdl.addListener('onIspSelected', function(el){
-		onIspSelection(el);
-		writeToDatabase();
+	mdl.addListener('onIspSelected', function(isp){
+		isp = isp;
+		var o = { isp : isp, status : status, lat : loc.lat, lng : loc.lng, time : Date.now() };
+		map.location = o;
+		writeToDatabase(o);
 		$('#header').show();
+		$('#isp-dropdown-label').text(isp);
 	});
 	mdl.addListener('onStatusSelected', function(e){ status = e; });
 	
@@ -27,7 +30,6 @@ $(document).ready(function(){
 		} else{
 			drawISPList();
 			mdl.setLocation(loc.city, loc.state, isps);
-			map.location = {lat : loc.lat, lng : loc.lng};
 		}
 	}
 	
@@ -36,20 +38,13 @@ $(document).ready(function(){
 		$('#isp-dropdown ul').empty();
 		for (var i=0; i < isps.length; i++) $('#isp-dropdown ul').append("<li><a href='#'>"+isps[i]+"</a></li>");
 	}
-
-	function onIspSelection(el)
-	{
-		isp = $(el).text();
-		$('#isp-dropdown-label').text(isp);
-	}
 	
-	function writeToDatabase()
+	function writeToDatabase(obj)
 	{
-		console.log('location = ', loc.lat, loc.lng)
 		$.ajax({
 			url: '/user',
 			type : "POST",
-			data : { isp : isp, status : status, lat : loc.lat, lng : loc.lng },
+			data : obj,
 			success: function(data){
 				console.log('ok');
 			},
@@ -62,6 +57,6 @@ $(document).ready(function(){
 // global nav //
 	$('#btn-home').click(function(){ mdl.showHome(); });
 	$('#btn-info').click(function(){ mdl.showInfo(); });
-	$('#isp-dropdown ul').click(function(e){ onIspSelection(e.target); });
-
+	$('#isp-dropdown ul').click(function(e){  isp = $(e.target).text(); $('#isp-dropdown-label').text(isp); });
+	
 });
