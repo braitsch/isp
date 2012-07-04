@@ -46,7 +46,7 @@ $(document).ready(function(){
 			type : "POST",
 			data : obj,
 			success: function(data){
-				console.log('ok');
+			//	console.log(data);
 			},
 			error: function(jqXHR){
 				console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText);

@@ -5,6 +5,8 @@ var dbName = 'isp';
 var dbPort = 27017;
 var dbHost = global.host;
 
+var dummy_data = require('./dummy-data');
+
 var DBM = {};
 	DBM.db = new Db(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}, {}));
 	DBM.db.open(function(e, d){
@@ -36,10 +38,15 @@ DBM.setUser = function(newObj, callback)
 
 DBM.getAllUsers = function(callback)
 {
-	DBM.users.find().toArray( function(e, res) { callback(e, res) });
+	DBM.users.find().toArray( function(e, res) { callback(res) });
 }
 
 DBM.delAllUsers = function(callback)
 {
-	DBM.users.remove(); callback();
+	DBM.users.remove();
+	for (var i = dummy_data.users.length - 1; i >= 0; i--){
+		var o = dummy_data.users[i];
+		DBM.users.insert(o);
+	};
+	callback();
 }

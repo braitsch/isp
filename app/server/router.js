@@ -20,20 +20,28 @@ module.exports = function(app) {
 			if (e) res.send('ok', 200);
 		});
 	})
+	
+	app.post('/get-markers', function(req, res){
+		var ne = req.param('ne');
+		var sw = req.param('sw');
+		DB.getAllUsers( function(users){
+			res.send(users, 200);
+		})
+	});
 
-	app.get('/print', function(req, res) {
-		DB.getAllUsers( function(e, users){
+	app.get('/print', function(req, res){
+		DB.getAllUsers( function(users){
 			res.render('print', { title : 'db-dump', users : users } );
 		})
 	});
 
-	app.get('/reset', function(req, res) {
+	app.get('/reset', function(req, res){
 		DB.delAllUsers( function(){
 			res.redirect('/print');
 		});
 	});
 	
-	app.get('*', function(req, res) {
+	app.get('*', function(req, res){
 		res.render('404', {  title: '404!' });
 	});
 
