@@ -16,7 +16,8 @@ $(document).ready(function(){
 	mdl.addListener('onIspSelected', function(isp){
 		isp = isp;
 		var o = { isp : isp, status : status, lat : loc.lat, lng : loc.lng, time : Date.now() };
-		map.location = o;
+		map.setIsp(isp);
+		map.setLocation(o);
 		writeToDatabase(o);
 		$('#header').show();
 		$('#isp-dropdown-label').text(isp);
@@ -57,6 +58,6 @@ $(document).ready(function(){
 // global nav //
 	$('#btn-home').click(function(){ mdl.showHome(); });
 	$('#btn-info').click(function(){ mdl.showInfo(); });
-	$('#isp-dropdown ul').click(function(e){  isp = $(e.target).text(); $('#isp-dropdown-label').text(isp); });
+	$('#isp-dropdown ul').click(function(e){  isp = $(e.target).text(); $('#isp-dropdown-label').text(isp); map.setIsp(isp); });
 	
 });
