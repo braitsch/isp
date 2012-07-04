@@ -58,15 +58,30 @@ html {
 }
 #map_window {
   width: 260px;
-  height: 60px;
+  margin: 12px 10px 12px 10px;
+}
+#map_window hr {
+  margin: 4px 0 4px 0;
+  height: 1px;
+  line-height: 0;
+  border-width: 0;
+  background-color: #ccc;
 }
 #map_window p {
-  margin: 10px;
+  margin: 0;
+  padding: 0 0 0 4px;
+  color: #808080;
+  text-shadow: -1px 1px 0 #fff;
+  -moz-text-shadow: -1px 1px 0 #fff;
+  -webkit-text-shadow: -1px 1px 0 #fff;
 }
 .map_window_yellow {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  box-shadow: 3px 3px 5px #888;
+  -moz-box-shadow: 3px 3px 5px #888;
+  -webkit-box-shadow: 3px 3px 5px #888;
   background: #f3961c;
 /* default background for browsers without gradient support */
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));
@@ -89,13 +104,16 @@ html {
   width: 0;
   border-color: #f3961c transparent;
 }
-.map_window_dark {
+.map_window_solid {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  background: #ccc;
+  box-shadow: 3px 3px 5px #888;
+  -moz-box-shadow: 3px 3px 5px #888;
+  -webkit-box-shadow: 3px 3px 5px #888;
+  background: #e2e2e2;
 }
-.map_window_dark:after {
+.map_window_solid:after {
   content: "";
   position: absolute;
   bottom: -15px;
@@ -108,7 +126,7 @@ html {
 /* reduce the damage in FF3.0 */
   display: block;
   width: 0;
-  border-color: #ccc transparent;
+  border-color: #e2e2e2 transparent;
 }
 #footer {
   display: block;

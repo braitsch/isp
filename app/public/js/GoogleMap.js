@@ -17,13 +17,14 @@ GoogleMap = function()
 		content: document.getElementById('map_window'),
 		disableAutoPan: false,
 		maxWidth: 0,
-		pixelOffset: new google.maps.Size(-93, -110),
+		pixelOffset: new google.maps.Size(-94, -110),
 		zIndex: null,
 		closeBoxMargin: "10px",
 		closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
 		infoBoxClearance: new google.maps.Size(1, 1),
 		isHidden: false,
 		pane: "floatPane",
+		boxClass : 'map_window_solid',
 		enableEventPropagation: false
 	});
 
@@ -63,7 +64,10 @@ GoogleMap = function()
 
 // listen for map clicks & repositioning //
 
+	var temp_kill = false;
+// map refresh needs come from a button action instead of mapmove ...
 	google.maps.event.addListener(map, 'bounds_changed', function() {
+		if (temp_kill) return; temp_kill = true;
 		if (mapMoveTimeout) clearTimeout(mapMoveTimeout);
 		mapMoveTimeout = setTimeout(function(){
 			var bnds = map.getBounds();
@@ -133,10 +137,10 @@ GoogleMap = function()
 		});
 		markers.push(m);
 		google.maps.event.addListener(m, 'click', function(){
-			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'good' : 'bad')+"</span>";
+			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'Status Online' : 'Status Offline')+"</span>";
 			$('#map_window #isp').html(m.isp + ' : '+status);
-			$('#map_window #time').html('last updated : ' + moment(parseInt(m.time)).fromNow());
-			win.setOptions({ boxClass : (m.special ? 'map_window_yellow': 'map_window_dark') });
+			$('#map_window #time').html('Last Updated : ' + moment(parseInt(m.time)).fromNow());
+		//	win.setOptions({ boxClass : (m.special ? 'map_window_gradient': 'map_window_solid') });
 			win.open(map, m); win.show();
 		});
 	}

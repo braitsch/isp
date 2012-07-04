@@ -58,16 +58,34 @@ body, html
 	max-width none
 
 // --- marker overlay --- //
-	
+
+map_window_color = #e2e2e2
+map_window_grad1 = #F5F5F5
+map_window_grad2 = #F5F5F5
+
 #map_window
 	width 260px
-	height 60px
+	margin 12px 10px 12px 10px
+#map_window hr
+	margin 4px 0 4px 0
+	height 1px
+	line-height 0
+	border-width 0
+	background-color #ccc
 #map_window p
-	margin 10px
+	margin 0
+	padding 0 0 0 4px
+	color grey
+	text-shadow: -1px 1px 0 white
+	-moz-text-shadow: -1px 1px 0 white
+	-webkit-text-shadow: -1px 1px 0 white
 map_window_base()
 	-webkit-border-radius 10px
 	-moz-border-radius 10px
 	border-radius 10px
+	box-shadow: 3px 3px 5px #888;
+	-moz-box-shadow: 3px 3px 5px #888;
+	-webkit-box-shadow: 3px 3px 5px #888;
 map_window_triangle()
 	content ""
 	position absolute
@@ -88,12 +106,12 @@ map_window_triangle()
 .map_window_yellow:after
 	map_window_triangle()
 	border-color #f3961c transparent
-.map_window_dark
+.map_window_solid
 	map_window_base()
-	background #ccc
-.map_window_dark:after
+	background map_window_color
+.map_window_solid:after
 	map_window_triangle()
-	border-color #ccc transparent
+	border-color map_window_color transparent
 
 // --- footer --- //
 
