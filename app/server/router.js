@@ -25,6 +25,7 @@ module.exports = function(app) {
 		var ne = req.param('ne');
 		var sw = req.param('sw');
 		DB.getAllUsers( function(users){
+			for (var i = users.length - 1; i >= 0; i--) users[i].user = users[i].ip == req.connection.remoteAddress;
 			res.send(users, 200);
 		})
 	});

@@ -2,6 +2,7 @@
 GoogleMap = function()
 {
 	var ispName = '';
+	var uMarker = null;
 	var markers = [];
 	var searchCircle;
 	var searchArea = 1; // 1 mile
@@ -27,6 +28,17 @@ GoogleMap = function()
 		boxClass : 'map_window_solid',
 		enableEventPropagation: false
 	});
+	var searchCircle = new google.maps.Circle({
+		map: map,
+		strokeColor: "#FF0000",
+		strokeOpacity: 0.8,
+		strokeWeight: 2,
+		fillColor: "#FF0000",
+		fillOpacity: 0.25,
+		radius: GoogleMap.calcMilesToMeters(searchArea / 2)
+	});
+	google.maps.event.addListener(map, 'click', function(e) { win.hide(); });
+	google.maps.event.addListener(searchCircle, 'click', function(e) { win.hide(); });
 
 // create colored markers & a shadow //
 	var drawMarker = function(color)
@@ -50,58 +62,65 @@ GoogleMap = function()
 
 // public methods //
 	
-	this.setIsp = function(s)
+	this.setMenuIsp = function(isp)
 	{
-		ispName = s; if (markers.length) drawMap();
+		ispName = isp;
+		drawMap();
 	}
-	
+
 	this.setLocation = function(obj)
 	{
-		addMarker(obj);
-		drawCircle(obj.lat, obj.lng);
+		if (uMarker) {
+			uMarker.setPosition(new google.maps.LatLng(obj.lat, obj.lng));
+			drawMap();
+		}
 		map.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
+		searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 	}
 
-// listen for map clicks & repositioning //
+	this.setUserIspAndStatus = function(isp, status)
+	{
+		uMarker.isp = ispName = isp;
+		uMarker.status = status;
+		uMarker.time = Date.now();
+		uMarker.setIcon(status == 1 ? markerGreen : markerRed);
+		drawMap();
+	}
 
-	var temp_kill = false;
-// map refresh needs come from a button action instead of mapmove ...
-	google.maps.event.addListener(map, 'bounds_changed', function() {
-		if (temp_kill) return; temp_kill = true;
-		if (mapMoveTimeout) clearTimeout(mapMoveTimeout);
-		mapMoveTimeout = setTimeout(function(){
-			var bnds = map.getBounds();
-			var ne = bnds.getNorthEast();
-			var sw = bnds.getSouthWest();
-			(function( ne, sw){
-			// first clear all markers from the map //
-				while(markers.length){ markers[0].setMap(null); markers.splice(0, 1); }
-				$.ajax({
-					url: '/get-markers',
-					type : "POST",
-					data : {ne : ne, sw : sw},
-					success: function(markers){ addMarkers(markers); },
-					error: function(jqXHR){ console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText); }
-				});
-			})({ lat:ne.lat(), lng:ne.lng() }, { lat:sw.lat(), lng:sw.lng() });
-		}, 100);
-	});
-	google.maps.event.addListener(map, 'click', function(e) { win.hide(); });
+	this.getMarkers = function()
+	{
+		var bnds = map.getBounds();
+		var ne = bnds.getNorthEast();
+		var sw = bnds.getSouthWest();
+		(function( ne, sw){
+		// first clear all markers from the map //
+			while(markers.length){ markers[0].setMap(null); markers.splice(0, 1); }
+			$.ajax({
+				url: '/get-markers',
+				type : "POST",
+				data : {ne : ne, sw : sw},
+				success: function(markers){ addMarkers(markers); },
+				error: function(jqXHR){ console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText); }
+			});
+		})({ lat:ne.lat(), lng:ne.lng() }, { lat:sw.lat(), lng:sw.lng() });
+	}
 	
 	var addMarkers = function(a)
 	{
 		for (var i = a.length - 1; i >= 0; i--) {
-	// detect which markers are within the search area so we can draw an average status value //
-			a[i].inCircle = searchCircle.contains(new google.maps.LatLng(a[i].lat, a[i].lng));
 	// build the markers and add them to the markers array //
-			addMarker(a[i]);
+			var m = addMarker(a[i]);
+			if (a[i].user == true) uMarker = m;
 		}
 		drawMap();
 	}
 	
 	var drawMap = function()
 	{
-		for (var i = markers.length - 1; i >= 0; i--) markers[i].setVisible(markers[i].isp == ispName);
+		for (var i = markers.length - 1; i >= 0; i--) {
+			markers[i].setVisible(markers[i].isp == ispName);
+			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
+		}
 		win.hide(); drawSearchArea();
 	}
 	
@@ -143,6 +162,7 @@ GoogleMap = function()
 		//	win.setOptions({ boxClass : (m.special ? 'map_window_gradient': 'map_window_solid') });
 			$('#map_window').show(); win.open(map, m); win.show();
 		});
+		return m;
 	}
 
 	var drawPoints = function(lat, lng)
@@ -151,21 +171,6 @@ GoogleMap = function()
 		addMarker(lat - GoogleMap.calcMilesToLatDegrees(searchArea/2), lng);
 		addMarker(lat, lng - GoogleMap.calcMilesToLngDegrees(lat, searchArea/2));
 		addMarker(lat, lng + GoogleMap.calcMilesToLngDegrees(lat, searchArea/2));
-	}
-
-	var drawCircle = function(lat, lng)
-	{
-		searchCircle = new google.maps.Circle({
-			map: map,
-			strokeColor: "#FF0000",
-			strokeOpacity: 0.8,
-			strokeWeight: 2,
-			fillColor: "#FF0000",
-			fillOpacity: 0.25,
-			radius: GoogleMap.calcMilesToMeters(searchArea / 2),
-			center: new google.maps.LatLng(lat, lng)
-		});
-		google.maps.event.addListener(searchCircle, 'click', function(e) { win.hide(); });
 	}
 
 	var drawBounds = function(lat, lng)

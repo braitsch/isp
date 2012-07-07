@@ -15,14 +15,15 @@ LocationDetector = function()
 		if (!navigator.geolocation){
 			_onComplete(false, 'Your browser does not support geolocation :(');
 		}	else{
-			navigator.geolocation.getCurrentPosition(getGeoCodeData, onPositionError);
+			navigator.geolocation.watchPosition(getGeoCodeData, onPositionError, { enableHighAccuracy: true, maximumAge:30000, timeout:27000 });
 		}
 	}
-	
+
 	var getGeoCodeData = function(pos)
 	{
 		_lat = pos.coords.latitude;
 		_lng = pos.coords.longitude;
+	//	console.log('onGeoData', pos.coords.accuracy, pos.coords.speed, pos.coords.altitude, pos.coords.altitudeAccuracy);
 		var coder = new google.maps.Geocoder();
 		var point = new google.maps.LatLng(_lat, _lng);
 		if (coder) {
@@ -46,7 +47,7 @@ LocationDetector = function()
 			});
 		}
 	}
-	
+
 	var onPositionError = function(e)
 	{
 		var msg;
