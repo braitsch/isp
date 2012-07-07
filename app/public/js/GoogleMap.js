@@ -21,9 +21,9 @@ GoogleMap = function()
 		pixelOffset: new google.maps.Size(-94, -110),
 		zIndex: null,
 		closeBoxMargin: "10px",
-		closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+		closeBoxURL: '',
 		infoBoxClearance: new google.maps.Size(1, 1),
-		isHidden: false,
+		isHidden: true,
 		pane: "floatPane",
 		boxClass : 'map_window_solid',
 		enableEventPropagation: false
@@ -65,7 +65,7 @@ GoogleMap = function()
 	this.setMenuIsp = function(isp)
 	{
 		ispName = isp;
-		drawMap();
+		drawMap(); win.hide();
 	}
 
 	this.setLocation = function(obj)
@@ -159,7 +159,7 @@ GoogleMap = function()
 		google.maps.event.addListener(m, 'click', function(){
 			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'Status Online' : 'Status Offline')+"</span>";
 			$('#map_window #isp').html(m.isp + ' : '+status);
-			$('#map_window #time').html('Last Updated : ' + moment(parseInt(m.time)).fromNow());
+			$('#map_window #time').html('Updated : ' + moment(parseInt(m.time)).fromNow());
 		//	win.setOptions({ boxClass : (m.special ? 'map_window_gradient': 'map_window_solid') });
 			$('#map_window').show(); win.open(map, m); win.show();
 		});

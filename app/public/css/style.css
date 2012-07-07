@@ -58,7 +58,7 @@ html {
 }
 #map_window {
   display: none;
-  width: 260px;
+  width: auto;
   margin: 12px 10px 12px 10px;
 }
 #map_window hr {
@@ -70,8 +70,10 @@ html {
 }
 #map_window p {
   margin: 0;
-  padding: 0 0 0 4px;
+  padding: 0;
+  white-space: nowrap;
   color: #808080;
+  text-align: center;
   text-shadow: -1px 1px 0 #fff;
   -moz-text-shadow: -1px 1px 0 #fff;
   -webkit-text-shadow: -1px 1px 0 #fff;
