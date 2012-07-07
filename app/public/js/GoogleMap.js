@@ -72,10 +72,9 @@ GoogleMap = function()
 	{
 		if (uMarker) {
 			uMarker.setPosition(new google.maps.LatLng(obj.lat, obj.lng));
+			searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 			drawMap();
 		}
-		map.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
-		searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 	}
 
 	this.setUserIspAndStatus = function(isp, status)
