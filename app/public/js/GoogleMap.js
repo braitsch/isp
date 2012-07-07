@@ -18,7 +18,6 @@ GoogleMap = function()
 		content: document.getElementById('map_window'),
 		disableAutoPan: false,
 		maxWidth: 0,
-		pixelOffset: new google.maps.Size(-94, -110),
 		zIndex: null,
 		closeBoxMargin: "10px",
 		closeBoxURL: '',
@@ -84,7 +83,6 @@ GoogleMap = function()
 		uMarker.isp = ispName = isp;
 		uMarker.status = status;
 		uMarker.time = Date.now();
-		uMarker.setIcon(status == 1 ? markerGreen : markerRed);
 		drawMap();
 	}
 
@@ -110,8 +108,11 @@ GoogleMap = function()
 	{
 		for (var i = a.length - 1; i >= 0; i--) {
 	// build the markers and add them to the markers array //
-			var m = addMarker(a[i]);
-			if (a[i].user == true) uMarker = m;
+			if (a[i].user == false) {
+				addMarker(a[i]);
+			}	else{
+				uMarker = drawGeoMarker(a[i]);
+			}
 		}
 		drawMap();
 	}
@@ -151,28 +152,59 @@ GoogleMap = function()
 			inCircle : obj.inCircle,
 			icon : obj.status == 1 ? markerGreen : markerRed,
 			shadow : markerShadow,
-			// animation : google.maps.Animation.DROP,
-			// icon : './img/markers/'+icons.fail[i]+'.png',
 			position : new google.maps.LatLng(obj.lat, obj.lng)
 		});
 		markers.push(m);
-		google.maps.event.addListener(m, 'click', function(){
-			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'Status Online' : 'Status Offline')+"</span>";
-			$('#map_window #isp').html(m.isp + ' : '+status);
-			$('#map_window #time').html('Updated : ' + moment(parseInt(m.time)).fromNow());
-		//	win.setOptions({ boxClass : (m.special ? 'map_window_gradient': 'map_window_solid') });
-			$('#map_window').show(); win.open(map, m); win.show();
-		});
+		addMarkerClickHandler(m);
 		return m;
 	}
 
-	var drawPoints = function(lat, lng)
+	var drawGeoMarker = function(obj)
 	{
-		addMarker(lat + GoogleMap.calcMilesToLatDegrees(searchArea/2), lng);
-		addMarker(lat - GoogleMap.calcMilesToLatDegrees(searchArea/2), lng);
-		addMarker(lat, lng - GoogleMap.calcMilesToLngDegrees(lat, searchArea/2));
-		addMarker(lat, lng + GoogleMap.calcMilesToLngDegrees(lat, searchArea/2));
+		var i = new google.maps.MarkerImage('img/markers/bluedot.png',
+			null, // size
+			null, // origin
+			new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
+			new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
+		);
+		var m = new google.maps.Marker({
+			map: map,
+			isp : obj.isp,
+			status : obj.status,
+			time : obj.time,
+			inCircle : true,
+			flat: true,
+			icon: i,
+			visible: true,
+			optimized: false,
+			title : 'geoMarker',
+			position : new google.maps.LatLng(obj.lat, obj.lng)
+		});
+		markers.push(m);
+		addMarkerClickHandler(m);
+		return m;
 	}
+
+	var addMarkerClickHandler = function(m)
+	{
+		google.maps.event.addListener(m, 'click', function(){
+			var offset = new google.maps.Size(-93, m.title == 'geoMarker' ? -90 : -110);
+			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'Status Online' : 'Status Offline')+"</span>";
+			$('#map_window #isp').html(m.isp + ' : '+status);
+			$('#map_window #time').html('Updated : ' + moment(parseInt(m.time)).fromNow());
+			win.setOptions({ pixelOffset : offset });
+		//	win.setOptions({ boxClass : (m.special ? 'map_window_gradient': 'map_window_solid') });
+			$('#map_window').show(); win.open(map, m); win.show();
+		});
+	}
+
+	// var drawPoints = function(lat, lng)
+	// {
+	// 	addMarker(lat + GoogleMap.calcMilesToLatDegrees(searchArea/2), lng);
+	// 	addMarker(lat - GoogleMap.calcMilesToLatDegrees(searchArea/2), lng);
+	// 	addMarker(lat, lng - GoogleMap.calcMilesToLngDegrees(lat, searchArea/2));
+	// 	addMarker(lat, lng + GoogleMap.calcMilesToLngDegrees(lat, searchArea/2));
+	// }
 
 	var drawBounds = function(lat, lng)
 	{
