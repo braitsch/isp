@@ -11,7 +11,7 @@ GoogleMap = function()
 // create the map & info window //
 	var map = new google.maps.Map(document.getElementById('map_canvas'), {
 		zoom : 14,
-		disableDefaultUI : true,
+		disableDefaultUI : mobile,
 		mapTypeId : google.maps.MapTypeId.ROADMAP
 	});
 	var win = new InfoBox({
@@ -74,9 +74,9 @@ GoogleMap = function()
 			map.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 		}	else{
 			uMarker.setPosition(new google.maps.LatLng(obj.lat, obj.lng));
-			searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 			drawMap();
 		}
+		searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 	}
 
 	this.setUserIspAndStatus = function(isp, status)

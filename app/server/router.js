@@ -4,8 +4,7 @@ var DB = require('./modules/db-manager');
 module.exports = function(app) {
 
 	app.get('/', function(req, res) {
-	//	if (/mobile/i.test(req.headers['user-agent'])) //
-		res.render('index', { title: 'Internet Service Provider System Status' });
+		res.render('index', { title: 'Internet Service Provider System Status', mobile : /mobile/i.test(req.headers['user-agent']) });
 	});
 
 	app.post('/user', function(req, res){
