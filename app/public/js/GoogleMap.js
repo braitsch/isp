@@ -70,7 +70,9 @@ GoogleMap = function()
 
 	this.setLocation = function(obj)
 	{
-		if (uMarker) {
+		if (uMarker == null) {
+			map.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
+		}	else{
 			uMarker.setPosition(new google.maps.LatLng(obj.lat, obj.lng));
 			searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 			drawMap();
