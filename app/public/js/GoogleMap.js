@@ -121,7 +121,7 @@ GoogleMap = function()
 			markers[i].setVisible(markers[i].isp == ispName);
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
 		}
-		win.hide(); drawSearchArea();
+		drawSearchArea();
 	}
 	
 	var drawSearchArea = function()
