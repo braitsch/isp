@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
 
 // user generated variables //
-	var isp, status, initialized;
+	var initialized;
 
 	var loc = new LocationDetector();
 	var map = new GoogleMap();
@@ -13,15 +13,17 @@ $(document).ready(function(){
 	
 	loc.getLocation(onLocationDetected);
 	
-	mdl.addListener('onIspSelected', function(isp){
-		isp = isp;
-		var o = { isp : isp, status : status, lat : loc.lat, lng : loc.lng };
-		writeToDatabase(o);
+	mdl.addListener('onIspStatusChange', function(status, isp){
+		onIspSelected(isp);
 		map.setUserIspAndStatus(isp, status);
+		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng });
 		$('#header').show();
-		$('#isp-dropdown-label').text(isp);
 	});
-	mdl.addListener('onStatusSelected', function(e){ status = e; });
+	
+	function onIspSelected(isp)
+	{
+		$('#isp-dropdown-label').text(isp);
+	}
 	
 	function onLocationDetected(ok, e)
 	{
@@ -62,6 +64,6 @@ $(document).ready(function(){
 // global nav //
 	$('#btn-home').click(function(){ mdl.showHome(); });
 	$('#btn-info').click(function(){ mdl.showInfo(); });
-	$('#isp-dropdown ul').click(function(e){  isp = $(e.target).text(); $('#isp-dropdown-label').text(isp); map.setMenuIsp(isp); });
-	
+	$('#isp-dropdown ul').click(function(e){  var isp = $(e.target).text(); onIspSelected(isp); map.showIsp(isp); });
+
 });

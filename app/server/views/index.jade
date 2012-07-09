@@ -6,7 +6,7 @@
 			ul.dropdown-menu
 
 	button#btn-home.btn.btn-info
-		i.icon-home.icon-white
+		i.icon-pencil.icon-white
 	button#btn-info.btn.btn-info
 		i.icon-info-sign.icon-white
 
@@ -36,17 +36,27 @@
 #modal-home.modal.hide
 	.modal-header
 		button.close(data-dismiss='modal') x
-		h3 Home
+		h3 Internet Provider & Status
 	.modal-body
-		p change status / isp settings
+		h4 Internet Provider
+		select#isp-select
+		h4 Internet Status
+		select#isp-status
+			option Online
+			option Offline
 	.modal-footer
 		button(data-dismiss='modal').btn.btn-success OK
 #modal-info.modal.hide
 	.modal-header
 		button.close(data-dismiss='modal') x
-		h3 Info
+		h3 Internet System Status
 	.modal-body
-		p about this project
+		p 
+			| Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+			| sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+			| Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+			| nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+			| reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 	.modal-footer
 		button(data-dismiss='modal').btn.btn-success OK
 

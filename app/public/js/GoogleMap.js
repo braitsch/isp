@@ -61,7 +61,7 @@ GoogleMap = function()
 
 // public methods //
 	
-	this.setMenuIsp = function(isp)
+	this.showIsp = function(isp)
 	{
 		ispName = isp;
 		drawMap(); win.hide();

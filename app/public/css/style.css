@@ -149,7 +149,7 @@ html {
   padding-top: 10px;
 }
 .modal-body {
-  padding-bottom: 0;
+  padding: 15px 15px 5px 15px;
   text-align: center;
 }
 .modal-body #isp-selector {
@@ -160,6 +160,16 @@ html {
   display: block;
   width: 100px;
   margin-bottom: 14px;
+}
+#modal-home h4 {
+  margin-bottom: 6px;
+}
+#modal-info .modal-body {
+  padding-bottom: 10px;
+}
+#modal-info .modal-body p {
+  padding: 10px;
+  text-align: left;
 }
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
   .modal {
