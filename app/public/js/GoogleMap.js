@@ -3,6 +3,7 @@ GoogleMap = function()
 {
 	var ispName = '';
 	var uMarker = null;
+	var aMarker = null;
 	var markers = [];
 	var searchCircle;
 	var searchArea = 1; // 1 mile
@@ -73,7 +74,12 @@ GoogleMap = function()
 			map.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 		}	else{
 			uMarker.setPosition(new google.maps.LatLng(obj.lat, obj.lng));
-			drawMap();
+	//  redrawing on watchLocation change is cpu intesive //
+	//  disabled unless we want to track the user's position across cities
+	//  in which case, call on an interval and only if change value is significant 
+		// drawMap();
+	//  manually reset window position to get around bug on mobile safari //
+			win.setPosition(aMarker.getPosition());
 		}
 		searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
 	}
@@ -123,10 +129,10 @@ GoogleMap = function()
 			markers[i].setVisible(markers[i].isp == ispName);
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
 		}
-		drawSearchArea();
+		tintSearchCircle();
 	}
 	
-	var drawSearchArea = function()
+	var tintSearchCircle = function()
 	{
 		var a = [];
 		for (var i = markers.length - 1; i >= 0; i--) if (markers[i].inCircle && markers[i].isp == ispName) a.push(parseInt(markers[i].status));
@@ -188,6 +194,7 @@ GoogleMap = function()
 	var addMarkerClickHandler = function(m)
 	{
 		google.maps.event.addListener(m, 'click', function(){
+			aMarker = m;
 			var offset = new google.maps.Size(-93, m.title == 'geoMarker' ? -90 : -110);
 			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'Status Online' : 'Status Offline')+"</span>";
 			$('#map_window #isp').html(m.isp + ' : '+status);
