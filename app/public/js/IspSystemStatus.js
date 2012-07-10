@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
 
 // user generated variables //
-	var initialized;
+	var initialized = false;
 
 	var loc = new LocationDetector();
 	var map = new GoogleMap();
@@ -32,7 +32,7 @@ $(document).ready(function(){
 		} else{
 			drawISPList();
 			map.setLocation( { isp : isp, status : status, lat : loc.lat, lng : loc.lng } );
-			if (!initialized) {
+			if (initialized == false) {
 				map.getMarkers();
 				mdl.setLocation(loc.city, loc.state, isps);
 				initialized = true;

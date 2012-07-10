@@ -94,11 +94,10 @@ GoogleMap = function()
 
 	this.getMarkers = function()
 	{
-		console.log('map='+map)
+		console.log('addMarkers='+addMarkers)
 		var bnds = map.getBounds();
 		var ne = bnds.getNorthEast();
 		var sw = bnds.getSouthWest();
-		console.log('bnds='+bnds)
 		(function( ne, sw){
 		// first clear all markers from the map //
 			while(markers.length){ markers[0].setMap(null); markers.splice(0, 1); }
