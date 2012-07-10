@@ -11,7 +11,7 @@ ModalController = function()
 	w1.modal({ show : false, keyboard : false, backdrop : 'static' });
 	w2.modal({ show : false, keyboard : false, backdrop : 'static' });
 
-	var status = null;
+	var _isps, _status;
 
 	this.showHome = function()
 	{
@@ -25,67 +25,65 @@ ModalController = function()
 	
 	this.setLocation = function(city, state, isps)
 	{
+		_isps = isps;
 		w1.find('.modal-body p').html(
 			"It looks like you're in beautiful<br><span style='color:#27A3FA'>"+city +', '+ state+"</span><br>How's your Internet connection today?"
 		);
-		drawISPList(isps); w1.modal('show');
+		drawISPList(); w1.modal('show');
 	}
 	
-	var drawISPList = function(isps)
+	var drawISPList = function()
 	{
 	// build list of isps based on the user's location //
-		$('#isp-selector').empty();
-		$('#modal-home #isp-select').empty();
-		for (var i=0; i < isps.length; i++) {
-			$('#modal-home #isp-select').append("<option>"+isps[i]+"</option>");
-			$('#isp-selector').append("<button class='btn'>"+isps[i]+"</button>");
-		}
-		$('#isp-selector button').click(function(e){
-			w2.find('#check-status').removeClass('disabled');
-			$('#isp-selector button').each(function(n, o){
-				if (o != e.target){
-					$(o).attr('class', 'btn');
-				} else{
-					$(o).attr('class', 'btn btn-success');
-				}
-			});
-		})
+		$('#modal-wel2 select').empty();
+		for (var i=0; i < _isps.length; i++) $('#modal-wel2 select').append("<option>"+_isps[i]+"</option>");
+		$('#modal-wel2 .modal-body').append("<input type='text'></input>");
 	}
 	
 	var onWelcome1Complete = function(e)
 	{
 		w1.modal('hide');
-		status = $(e.target).attr('id') === 'service-ok' ? 1 : 0;
+		_status = $(e.target).attr('id') === 'service-ok' ? 1 : 0;
 	// update status message //
-		if (status == 1){
-			w2.find('.modal-body p').html("Cool, glad to hear all is A-OK.<br>Who is your Internet Service Provider?");
+		if (_status == 1){
+			$('#modal-wel2 #p1').html("Cool, glad to hear all is A-OK.<br>Who is your Internet Service Provider?");
 		}	else{
-			w2.find('.modal-body p').html("That sucks you're having problems.<br>Who is your Internet Service Provider?");
+			$('#modal-wel2 #p1').html("That sucks you're having problems.<br>Who is your Internet Service Provider?");
 		}
 		w2.modal('show');
+		w2.find('input').focus();
 	}
 	
 	var onWelcome2Complete = function()
 	{
-		if (w2.find('#check-status').hasClass('disabled') == false){
-			$('#isp-selector button').each(function(n, o){
-				if ($(o).hasClass('btn-success')) setStatusAndIsp($(o).text());
-			});
-			w2.modal('hide');
-		}
+		var isp = $('#modal-wel2 select').val();
+		var val = $('#modal-wel2 input').val();
+		val = capitalize(val.replace(/\W/ig, ''));
+		if (val) { isp = val; _isps.push(isp); }
+	// build the home list of isps //
+		$('#modal-home #isp-select').empty();
+		for (var i=0; i < _isps.length; i++) $('#modal-home #isp-select').append("<option>"+_isps[i]+"</option>");
+	// finally dispatch modal data back out to the rest of the application //
+		setStatusAndIsp(isp);
+		w2.modal('hide');
+	}
+	
+	var capitalize = function(s)
+	{
+		return s.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
 	
 	var onIspAndStatusChange = function()
 	{
-		status = $('#modal-home #isp-status').val() == 'Online' ? 1 : 0;
+		_status = $('#modal-home #isp-status').val() == 'Online' ? 1 : 0;
 		setStatusAndIsp($('#modal-home #isp-select').val());
 	}
 
 	var setStatusAndIsp = function(isp)
 	{
 		$('#modal-home #isp-select').val(isp);
-		$('#modal-home #isp-status').val(status == 1 ? 'Online' : 'Offline');
-		dispatch('onIspStatusChange', [status, isp]);
+		$('#modal-home #isp-status').val(_status == 1 ? 'Online' : 'Offline');
+		dispatch('onIspStatusChange', [_status, isp, _isps]);
 	}
 
 	m1.find('button').click(onIspAndStatusChange);

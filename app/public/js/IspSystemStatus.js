@@ -1,17 +1,15 @@
 
 $(document).ready(function(){
 
-// from the database based on location ...
-	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
 	var initialized = false;
-
 	var loc = new LocationDetector();
 	var map = new GoogleMap();
 	var mdl = new ModalController();
 	
 	loc.getLocation(onLocationData);
 	
-	mdl.addListener('onIspStatusChange', function(status, isp){
+	mdl.addListener('onIspStatusChange', function(status, isp, isps){
+		drawISPList(isps);
 		onIspSelected(isp);
 		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng });
 		$('#header').show();
@@ -30,14 +28,13 @@ $(document).ready(function(){
 			map.onLocationData( loc.lat, loc.lng );
 			if (initialized == false) {
 				initialized = true;
-				drawISPList();
 				map.getMarkers();
-				mdl.setLocation(loc.city, loc.state, isps);
+				mdl.setLocation(loc.city, loc.state, ['Comcast', 'AT&T', 'Verizon']);
 			}
 		}
 	}
 
-	function drawISPList()
+	function drawISPList(isps)
 	{
 		$('#isp-dropdown ul').empty();
 		for (var i=0; i < isps.length; i++) $('#isp-dropdown ul').append("<li><a href='#'>"+isps[i]+"</a></li>");
