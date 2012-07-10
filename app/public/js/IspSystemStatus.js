@@ -14,7 +14,6 @@ $(document).ready(function(){
 	loc.getLocation(onLocationDetected);
 	
 	mdl.addListener('onIspStatusChange', function(status, isp){
-		return;
 		onIspSelected(isp);
 		map.setUserIspAndStatus(isp, status);
 		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng });
