@@ -70,7 +70,6 @@ GoogleMap = function()
 	
 	this.setLocation = function(lat, lng)
 	{
-		console.log('setLocation '+uMarker);
 		if (uMarker == null) {
 			map.setCenter(new google.maps.LatLng(lat, lng));
 		}	else{
@@ -80,7 +79,7 @@ GoogleMap = function()
 	//  in which case, call on an interval and only if change value is significant 
 		// drawMap();
 	//  manually reset window position to get around bug on mobile safari //
-			win.setPosition(aMarker.getPosition());
+			if (aMarker) win.setPosition(aMarker.getPosition());
 		}
 		searchCircle.setCenter(new google.maps.LatLng(lat, lng));
 	}
