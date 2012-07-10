@@ -33,7 +33,7 @@ $(document).ready(function(){
 			drawISPList();
 			map.setLocation( { isp : isp, status : status, lat : loc.lat, lng : loc.lng } );
 			if (!initialized) {
-		//		map.getMarkers();
+				map.getMarkers();
 				mdl.setLocation(loc.city, loc.state, isps);
 				initialized = true;
 			}
