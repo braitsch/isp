@@ -3,8 +3,6 @@ $(document).ready(function(){
 
 // from the database based on location ...
 	var isps = ['Comcast', 'AT&T', 'Verizon', 'Other'];
-
-// user generated variables //
 	var initialized = false;
 
 	var loc = new LocationDetector();
@@ -33,9 +31,10 @@ $(document).ready(function(){
 			drawISPList();
 			map.setLocation( { isp : isp, status : status, lat : loc.lat, lng : loc.lng } );
 			if (initialized == false) {
+				initialized = true;
+				console.log('getMarkers='+initialized);
 				map.getMarkers();
 				mdl.setLocation(loc.city, loc.state, isps);
-				initialized = true;
 			}
 		}
 	}
