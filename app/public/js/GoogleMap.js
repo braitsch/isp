@@ -70,7 +70,7 @@ GoogleMap = function()
 	
 	this.setLocation = function(lat, lng)
 	{
-		console.log('setLocation +'uMarker);
+		console.log('setLocation '+uMarker);
 		if (uMarker == null) {
 			map.setCenter(new google.maps.LatLng(lat, lng));
 		}	else{
