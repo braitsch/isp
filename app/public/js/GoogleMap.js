@@ -86,6 +86,7 @@ GoogleMap = function()
 
 	this.setUserIspAndStatus = function(isp, status)
 	{
+		console.log('uMarker='+uMarker);
 		uMarker.isp = ispName = isp;
 		uMarker.status = status;
 		uMarker.time = Date.now();
@@ -94,7 +95,6 @@ GoogleMap = function()
 
 	this.getMarkers = function()
 	{
-		console.log('addMarkers='+addMarkers)
 		var bnds = map.getBounds();
 		var ne = bnds.getNorthEast();
 		var sw = bnds.getSouthWest();
@@ -126,8 +126,7 @@ GoogleMap = function()
 	
 	var drawMap = function()
 	{
-		console.log('drawMap')
-		console.log('**ispName = '+ispName);
+		console.log('drawMap ispName='+ispName)
 		for (var i = markers.length - 1; i >= 0; i--) {
 	//		markers[i].setVisible(markers[i].isp == ispName);
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
