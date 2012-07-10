@@ -87,10 +87,12 @@ GoogleMap = function()
 	this.setUserIspAndStatus = function(isp, status)
 	{
 		console.log('uMarker='+uMarker);
-		uMarker.isp = ispName = isp;
-		uMarker.status = status;
-		uMarker.time = Date.now();
-		drawMap();
+		if (uMarker){
+			uMarker.isp = ispName = isp;
+			uMarker.status = status;
+			uMarker.time = Date.now();
+			drawMap();
+		}
 	}
 
 	this.getMarkers = function()
@@ -121,6 +123,7 @@ GoogleMap = function()
 				uMarker = drawGeoMarker(a[i]);
 			}
 		}
+		console.log('addMarkers uMarker'+uMarker+' length='+markers.length);
 		drawMap();
 	}
 	
@@ -128,7 +131,7 @@ GoogleMap = function()
 	{
 		console.log('drawMap ispName='+ispName)
 		for (var i = markers.length - 1; i >= 0; i--) {
-	//		markers[i].setVisible(markers[i].isp == ispName);
+			markers[i].setVisible(markers[i].isp == ispName);
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
 		}
 		tintSearchCircle();
