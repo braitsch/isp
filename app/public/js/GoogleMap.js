@@ -117,7 +117,7 @@ GoogleMap = function()
 	{
 		console.log('adding markers')
 		for (var i = a.length - 1; i >= 0; i--) {
-		console.log(a[i])
+		console.log(a[i].user.isp, a[i].status, a[i].user)
 	// build the markers and add them to the markers array //
 			if (a[i].user == false) {
 				addMarker(a[i]);
