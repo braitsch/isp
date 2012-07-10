@@ -15,14 +15,23 @@ LocationDetector = function()
 		if (!navigator.geolocation){
 			_onComplete(false, 'Your browser does not support geolocation :(');
 		}	else{
-			navigator.geolocation.watchPosition(getGeoCodeData, onPositionError, { enableHighAccuracy: true, maximumAge:30000, timeout:27000 });
+			navigator.geolocation.watchPosition(onPositionChange, onPositionError, { enableHighAccuracy: true, maximumAge:30000, timeout:27000 });
 		}
 	}
 
-	var getGeoCodeData = function(pos)
+	var onPositionChange = function(pos)
 	{
 		_lat = pos.coords.latitude;
 		_lng = pos.coords.longitude;
+		if (_city == undefined && _state == undefined) {
+			getGeoCodeData();
+		}	else{
+			_onComplete(true);
+		}
+	}
+	
+	var getGeoCodeData = function()
+	{
 	//	console.log('onGeoData', pos.coords.accuracy, pos.coords.speed, pos.coords.altitude, pos.coords.altitudeAccuracy);
 		var coder = new google.maps.Geocoder();
 		var point = new google.maps.LatLng(_lat, _lng);
