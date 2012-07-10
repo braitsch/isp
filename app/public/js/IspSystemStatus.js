@@ -9,7 +9,7 @@ $(document).ready(function(){
 	var map = new GoogleMap();
 	var mdl = new ModalController();
 	
-	loc.getLocation(onLocationDetected);
+	loc.getLocation(onLocationData);
 	
 	mdl.addListener('onIspStatusChange', function(status, isp){
 		onIspSelected(isp);
@@ -22,12 +22,12 @@ $(document).ready(function(){
 		$('#isp-dropdown-label').text(isp);
 	}
 	
-	function onLocationDetected(ok, e)
+	function onLocationData(ok, e)
 	{
 		if (e){
-			console.log('onLocationDetected :: '+e);
+			console.log('onLocationData :: '+e);
 		} else{
-			map.setLocation( loc.lat, loc.lng );
+			map.onLocationData( loc.lat, loc.lng );
 			if (initialized == false) {
 				initialized = true;
 				drawISPList();
@@ -61,6 +61,6 @@ $(document).ready(function(){
 // global nav //
 	$('#btn-home').click(function(){ mdl.showHome(); });
 	$('#btn-info').click(function(){ mdl.showInfo(); });
-	$('#isp-dropdown ul').click(function(e){  var isp = $(e.target).text(); onIspSelected(isp); map.showIsp(isp); });
+	$('#isp-dropdown ul').click(function(e){  var isp = $(e.target).text(); onIspSelected(isp); map.onIspMenuSet(isp); });
 
 });

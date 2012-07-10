@@ -30,10 +30,10 @@ GoogleMap = function()
 	});
 	var searchCircle = new google.maps.Circle({
 		map: map,
-		strokeColor: "#FF0000",
+		strokeColor: "#333333",
 		strokeOpacity: 0.8,
 		strokeWeight: 2,
-		fillColor: "#FF0000",
+		fillColor: "#333333",
 		fillOpacity: 0.25,
 		radius: GoogleMap.calcMilesToMeters(searchArea / 2)
 	});
@@ -61,14 +61,8 @@ GoogleMap = function()
 	var markerShadow = drawMarkerShadow();
 
 // public methods //
-	
-	this.showIsp = function(isp)
-	{
-		ispName = isp;
-		drawMap(); win.hide();
-	}
-	
-	this.setLocation = function(lat, lng)
+
+	this.onLocationData = function(lat, lng)
 	{
 		if (uMarker == null) {
 			map.setCenter(new google.maps.LatLng(lat, lng));
@@ -94,6 +88,12 @@ GoogleMap = function()
 			uMarker.status = obj.status;
 			uMarker.time = obj.time;
 		}
+		drawMap();
+	}
+
+	this.onIspMenuSet = function(isp)
+	{
+		ispName = isp;
 		drawMap();
 	}
 
@@ -126,7 +126,7 @@ GoogleMap = function()
 			markers[i].setVisible(markers[i].isp == ispName);
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
 		}
-		tintSearchCircle();
+		win.hide(); tintSearchCircle();
 	}
 	
 	var tintSearchCircle = function()
@@ -138,7 +138,7 @@ GoogleMap = function()
 		if (uMarker.isp != ispName){
 			n /= a.length;
 		}	else{
-			n += uMarker.status;
+			n += parseInt(uMarker.status);
 			n /= a.length + 1;
 		}
 		var c = 'green';
