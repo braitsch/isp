@@ -70,6 +70,7 @@ GoogleMap = function()
 	
 	this.setLocation = function(lat, lng)
 	{
+		console.log('setLocation +'uMarker);
 		if (uMarker == null) {
 			map.setCenter(new google.maps.LatLng(lat, lng));
 		}	else{
@@ -133,9 +134,14 @@ GoogleMap = function()
 	{
 		var a = [];
 		for (var i = markers.length - 1; i >= 0; i--) if (markers[i].inCircle && markers[i].isp == ispName) a.push(parseInt(markers[i].status));
-		var n = uMarker.status;
+		var n = 0;
 		for (var i = a.length - 1; i >= 0; i--) n += a[i];
-		n /= a.length + 1;
+		if (uMarker.isp != ispName){
+			n /= a.length;
+		}	else{
+			n += uMarker.status;
+			n /= a.length + 1;
+		}
 		var c = 'green';
 		if (n < .3){
 			var c = 'red';
