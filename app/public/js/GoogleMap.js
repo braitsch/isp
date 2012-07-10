@@ -86,6 +86,7 @@ GoogleMap = function()
 
 	this.setUserIspAndStatus = function(isp, status)
 	{
+		console.log(uMarker, markers.length)
 		return;
 		uMarker.isp = ispName = isp;
 		uMarker.status = status;
