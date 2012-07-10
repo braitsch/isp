@@ -15,8 +15,8 @@ module.exports = function(app) {
 			lat : req.param('lat'),
 			lng : req.param('lng'),
 			time : Date.now()
-		}, function(e){
-			if (e) res.send('ok', 200);
+		}, function(o){
+			if (o) res.send(o, 200);
 		});
 	})
 	
@@ -24,8 +24,11 @@ module.exports = function(app) {
 		var ne = req.param('ne');
 		var sw = req.param('sw');
 		DB.getAllUsers( function(users){
-			for (var i = users.length - 1; i >= 0; i--) users[i].user = users[i].ip == req.connection.remoteAddress;
-			res.send(users, 200);
+			var a = [];
+			for (var i = users.length - 1; i >= 0; i--) {
+				if (users[i].ip != req.connection.remoteAddress) a.push(users[i]);
+			}
+			res.send(a, 200);
 		})
 	});
 

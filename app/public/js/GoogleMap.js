@@ -67,13 +67,13 @@ GoogleMap = function()
 		ispName = isp;
 		drawMap(); win.hide();
 	}
-
-	this.setLocation = function(obj)
+	
+	this.setLocation = function(lat, lng)
 	{
 		if (uMarker == null) {
-			map.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
+			map.setCenter(new google.maps.LatLng(lat, lng));
 		}	else{
-			uMarker.setPosition(new google.maps.LatLng(obj.lat, obj.lng));
+			uMarker.setPosition(new google.maps.LatLng(lat, lng));
 	//  redrawing on watchLocation change is cpu intesive //
 	//  disabled unless we want to track the user's position across cities
 	//  in which case, call on an interval and only if change value is significant 
@@ -81,18 +81,20 @@ GoogleMap = function()
 	//  manually reset window position to get around bug on mobile safari //
 			win.setPosition(aMarker.getPosition());
 		}
-		searchCircle.setCenter(new google.maps.LatLng(obj.lat, obj.lng));
+		searchCircle.setCenter(new google.maps.LatLng(lat, lng));
 	}
 
-	this.setUserIspAndStatus = function(isp, status)
+	this.onUserUpdated = function(obj)
 	{
-		console.log('uMarker='+uMarker);
-		if (uMarker){
-			uMarker.isp = ispName = isp;
-			uMarker.status = status;
-			uMarker.time = Date.now();
-			drawMap();
+		ispName = obj.isp;
+		if (uMarker == null) {
+			uMarker = drawGeoMarker(obj);
+		}	else{
+			uMarker.isp = obj.isp;
+			uMarker.status = obj.status;
+			uMarker.time = obj.time;
 		}
+		drawMap();
 	}
 
 	this.getMarkers = function()
@@ -115,21 +117,11 @@ GoogleMap = function()
 	
 	var addMarkers = function(a)
 	{
-		for (var i = a.length - 1; i >= 0; i--) {
-	// build the markers and add them to the markers array //
-			if (a[i].user == false) {
-				addMarker(a[i]);
-			}	else{
-				uMarker = drawGeoMarker(a[i]);
-			}
-		}
-		console.log('addMarkers uMarker'+uMarker+' length='+markers.length);
-		drawMap();
+		for (var i = a.length - 1; i >= 0; i--) addMarker(a[i]);
 	}
 	
 	var drawMap = function()
 	{
-		console.log('drawMap ispName='+ispName)
 		for (var i = markers.length - 1; i >= 0; i--) {
 			markers[i].setVisible(markers[i].isp == ispName);
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
@@ -141,9 +133,9 @@ GoogleMap = function()
 	{
 		var a = [];
 		for (var i = markers.length - 1; i >= 0; i--) if (markers[i].inCircle && markers[i].isp == ispName) a.push(parseInt(markers[i].status));
-		var n = 0;
+		var n = uMarker.status;
 		for (var i = a.length - 1; i >= 0; i--) n += a[i];
-		n /= a.length;
+		n /= a.length + 1;
 		var c = 'green';
 		if (n < .3){
 			var c = 'red';
@@ -163,6 +155,7 @@ GoogleMap = function()
 			inCircle : obj.inCircle,
 			icon : obj.status == 1 ? markerGreen : markerRed,
 			shadow : markerShadow,
+			visible : false,
 			position : new google.maps.LatLng(obj.lat, obj.lng)
 		});
 		markers.push(m);
@@ -191,7 +184,6 @@ GoogleMap = function()
 			title : 'geoMarker',
 			position : new google.maps.LatLng(obj.lat, obj.lng)
 		});
-		markers.push(m);
 		addMarkerClickHandler(m);
 		return m;
 	}

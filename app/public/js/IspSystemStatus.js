@@ -13,7 +13,6 @@ $(document).ready(function(){
 	
 	mdl.addListener('onIspStatusChange', function(status, isp){
 		onIspSelected(isp);
-		map.setUserIspAndStatus(isp, status);
 		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng });
 		$('#header').show();
 	});
@@ -28,10 +27,10 @@ $(document).ready(function(){
 		if (e){
 			console.log('onLocationDetected :: '+e);
 		} else{
-			drawISPList();
-			map.setLocation( { isp : isp, status : status, lat : loc.lat, lng : loc.lng } );
+			map.setLocation( loc.lat, loc.lng );
 			if (initialized == false) {
 				initialized = true;
+				drawISPList();
 				map.getMarkers();
 				mdl.setLocation(loc.city, loc.state, isps);
 			}
@@ -50,8 +49,8 @@ $(document).ready(function(){
 			url: '/user',
 			type : "POST",
 			data : obj,
-			success: function(data){
-			//	console.log(data);
+			success: function(obj){
+				map.onUserUpdated(obj);
 			},
 			error: function(jqXHR){
 				console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText);
