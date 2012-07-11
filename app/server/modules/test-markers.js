@@ -7,7 +7,7 @@ module.exports = [
 		lng		: '-122.4377969',
 		city	: 'San Francisco',
 		state	: 'California',
-		time 	: 10 },
+		time 	: 1341965170552 },
 	{	ip		: '198.228.216.144',
 		isp 	: 'AT&T',
 		status 	: 1,
@@ -15,5 +15,5 @@ module.exports = [
 		lng		: '-122.43166411182223',
 		city	: 'San Francisco',
 		state	: 'California',
-		time 	: 20 }
+		time 	: 1341965160552 }
 ]
