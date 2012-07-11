@@ -51,7 +51,6 @@ ModalController = function()
 			$('#modal-wel2 #p1').html("That sucks you're having problems.<br>Who is your Internet Service Provider?");
 		}
 		w2.modal('show');
-		w2.find('input').focus();
 	}
 	
 	var onWelcome2Complete = function()

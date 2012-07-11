@@ -5,7 +5,8 @@ var dbName = 'isp';
 var dbPort = 27017;
 var dbHost = global.host;
 
-var dummy_data = require('./dummy-data');
+var isps = require('./isps-by-city');
+var markers = require('./test-markers');
 
 var DBM = {};
 	DBM.db = new Db(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}, {}));
@@ -16,37 +17,49 @@ var DBM = {};
 			console.log('connected to database :: ' + dbName);
 		}
 	});
-	DBM.users = DBM.db.collection('users');
+	DBM.isps = DBM.db.collection('isps');
+	DBM.markers = DBM.db.collection('markers');
 
 module.exports = DBM;
 
 DBM.setUser = function(newObj, callback)
 {
-	DBM.users.findOne({ip:newObj.ip}, function(e, oldObj){
+	DBM.markers.findOne({ip:newObj.ip}, function(e, oldObj){
 		if (oldObj == null){
-			DBM.users.insert(newObj, callback(newObj));
+			DBM.markers.insert(newObj, callback(newObj));
 		}	else{
 			oldObj.isp		= newObj.isp;
 			oldObj.status 	= newObj.status;
 			oldObj.lat		= newObj.lat;
 			oldObj.lng		= newObj.lng;
+			oldObj.city		= newObj.city;
+			oldObj.state	= newObj.state;
 			oldObj.time	 	= Date.now()
-			DBM.users.save(oldObj); callback(oldObj);
+			DBM.markers.save(oldObj); callback(oldObj);
 		}
 	});
 }
 
-DBM.getAllUsers = function(callback)
+DBM.getIspsByCity = function(city, callback)
 {
-	DBM.users.find().toArray( function(e, res) { callback(res) });
+	DBM.isps.findOne({city : city}, function(e, res) { callback(res) });
 }
 
-DBM.delAllUsers = function(callback)
+DBM.getAllMarkers = function(callback)
 {
-	DBM.users.remove();
-	for (var i = dummy_data.users.length - 1; i >= 0; i--){
-		var o = dummy_data.users[i];
-		DBM.users.insert(o);
-	};
+	DBM.markers.find().sort({time : 1}).toArray( function(e, res) { callback(res) });
+}
+
+DBM.resetIsps = function(callback)
+{
+	DBM.isps.remove();
+	for (var i = isps.length - 1; i >= 0; i--) DBM.isps.insert(isps[i]);
+	callback();
+}
+
+DBM.resetMarkers = function(callback)
+{
+	DBM.markers.remove();
+	for (var i = markers.length - 1; i >= 0; i--) DBM.markers.insert(markers[i]);
 	callback();
 }

@@ -14,7 +14,8 @@ module.exports = function(app) {
 			status : req.param('status'),
 			lat : req.param('lat'),
 			lng : req.param('lng'),
-			time : Date.now()
+			city : req.param('city'),
+			state : req.param('state'),
 		}, function(o){
 			if (o) res.send(o, 200);
 		});
@@ -23,24 +24,40 @@ module.exports = function(app) {
 	app.post('/get-markers', function(req, res){
 		var ne = req.param('ne');
 		var sw = req.param('sw');
-		DB.getAllUsers( function(users){
+		DB.getAllMarkers(function(markers){
 			var a = [];
-			for (var i = users.length - 1; i >= 0; i--) {
-				if (users[i].ip != req.connection.remoteAddress) a.push(users[i]);
+			for (var i = markers.length - 1; i >= 0; i--) {
+				if (markers[i].ip != req.connection.remoteAddress) a.push(markers[i]);
 			}
 			res.send(a, 200);
 		})
 	});
 
-	app.get('/print', function(req, res){
-		DB.getAllUsers( function(users){
-			res.render('print', { title : 'db-dump', users : users } );
+	app.post('/get-isps', function(req, res){
+		DB.getIspsByCity(req.param('city'), function(loc){
+			if (loc == null){
+				res.send(null, 200);
+			}	else{
+				res.send(loc.isps, 200);
+			}
+		})
+	});
+	
+	app.get('/reset-locations', function(req, res){
+		DB.resetIsps(function(isps){
+			res.send('ok', 200);
 		})
 	});
 
-	app.get('/reset', function(req, res){
-		DB.delAllUsers( function(){
-			res.redirect('/print');
+	app.get('/print-markers', function(req, res){
+		DB.getAllMarkers(function(markers){
+			res.render('print', { title : 'db-dump', users : markers } );
+		})
+	});
+
+	app.get('/reset-markers', function(req, res){
+		DB.resetMarkers(function(){
+			res.redirect('/print-markers');
 		});
 	});
 	

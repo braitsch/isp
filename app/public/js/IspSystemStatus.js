@@ -11,7 +11,7 @@ $(document).ready(function(){
 	mdl.addListener('onIspStatusChange', function(status, isp, isps){
 		drawISPList(isps);
 		onIspSelected(isp);
-		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng });
+		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng, city : loc.city, state : loc.state });
 		$('#header').show();
 	});
 	
@@ -29,7 +29,7 @@ $(document).ready(function(){
 			if (initialized == false) {
 				initialized = true;
 				map.getMarkers();
-				mdl.setLocation(loc.city, loc.state, ['Comcast', 'AT&T', 'Verizon']);
+				getLocationIsps();
 			}
 		}
 	}
@@ -48,6 +48,22 @@ $(document).ready(function(){
 			data : obj,
 			success: function(obj){
 				map.onUserUpdated(obj);
+			},
+			error: function(jqXHR){
+				console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText);
+			}
+		});
+	}
+	
+	function getLocationIsps()
+	{
+		$.ajax({
+			url: '/get-isps',
+			type : "POST",
+			data : {city : loc.city},
+			success: function(isps){
+				if (isps == null) isps = ['Comcast', 'AT&T', 'Verizon'];
+				mdl.setLocation(loc.city, loc.state, isps);
 			},
 			error: function(jqXHR){
 				console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText);

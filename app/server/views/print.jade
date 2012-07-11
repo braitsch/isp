@@ -9,18 +9,18 @@ body(style='background-color:white;')
 						th Ip Address
 						th ISP
 						th Status
-						th latitude
-						th longitude
+						th City
+						th State
 						th Last Updated
 				tbody
-				- for (var i = 0; i < users.length; i++)
+				- for (var i = users.length-1; i >= 0; i--)
 					tr
 						td= i+1
 						td= users[i].ip
 						td= users[i].isp
 						td= users[i].status
-						td= users[i].lat
-						td= users[i].lng
+						td= users[i].city
+						td= users[i].state
 						td= users[i].time
 
 script(src='/vendor/js/jquery-1.7.2.min.js')
