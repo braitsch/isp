@@ -41,6 +41,9 @@ GoogleMap = function()
 	google.maps.event.addListener(map, 'click', function(e) { win.hide(); });
 	google.maps.event.addListener(searchCircle, 'click', function(e) { win.hide(); });
 
+// test-markers //
+	google.maps.event.addListener(map, 'click', function(e) {console.log(e.latLng.lat(), e.latLng.lng())});
+
 // create colored markers & a shadow //
 	var drawMarker = function(v)
 	{
@@ -55,7 +58,7 @@ GoogleMap = function()
 		return new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
 		new google.maps.Size(40, 37),
 			new google.maps.Point(0, 0),
-			new google.maps.Point(12, 35)
+			new google.maps.Point(10, 37)
 		);
 	}
 	var markerOnline = drawMarker('online');
@@ -202,7 +205,7 @@ GoogleMap = function()
 			if (m.title == 'geoMarker'){
 				var offset = new google.maps.Size(-94, -91);
 			}	else{
-				var offset = new google.maps.Size(-92, -110);
+				var offset = new google.maps.Size(-91.5, -109);
 			}
 			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'Status Online' : 'Status Offline')+"</span>";
 			$('#map_window #isp').html(m.isp + ' : '+status);

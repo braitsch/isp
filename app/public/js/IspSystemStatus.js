@@ -62,7 +62,6 @@ $(document).ready(function(){
 			type : "POST",
 			data : {state : loc.state},
 			success: function(isps){
-				console.log(isps)
 				mdl.setLocation(loc.city, loc.state, isps);
 			},
 			error: function(jqXHR){

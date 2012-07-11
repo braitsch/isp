@@ -168,7 +168,7 @@ html {
   padding-bottom: 10px;
 }
 #modal-info .modal-body p {
-  padding: 10px;
+  padding: 0 0 0 10px;
   text-align: left;
 }
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
