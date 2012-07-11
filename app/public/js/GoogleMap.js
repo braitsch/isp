@@ -20,8 +20,8 @@ GoogleMap = function()
 		disableAutoPan: false,
 		maxWidth: 0,
 		zIndex: null,
-		closeBoxMargin: "10px",
 		closeBoxURL: '',
+		closeBoxMargin: "10px",
 		infoBoxClearance: new google.maps.Size(1, 1),
 		isHidden: true,
 		pane: "floatPane",
@@ -37,16 +37,18 @@ GoogleMap = function()
 		fillOpacity: 0.25,
 		radius: GoogleMap.calcMilesToMeters(searchArea / 2)
 	});
+	google.maps.event.addListener(win, 'click', function(e) { win.hide(); });
 	google.maps.event.addListener(map, 'click', function(e) { win.hide(); });
 	google.maps.event.addListener(searchCircle, 'click', function(e) { win.hide(); });
 
 // create colored markers & a shadow //
-	var drawMarker = function(color)
+	var drawMarker = function(v)
 	{
-		return new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color,
+	//	return new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color,
+			return new google.maps.MarkerImage('../img/markers/'+v+'.png',
 			new google.maps.Size(21, 34),
 			new google.maps.Point(0,0),
-			new google.maps.Point(10, 34)
+			new google.maps.Point(8, 34)
 		);
 	}
 	var drawMarkerShadow = function(){
@@ -56,8 +58,8 @@ GoogleMap = function()
 			new google.maps.Point(12, 35)
 		);
 	}
-	var markerRed = drawMarker('B03120');
-	var markerGreen = drawMarker('24B020');
+	var markerOnline = drawMarker('online');
+	var markerOffline = drawMarker('offline');
 	var markerShadow = drawMarkerShadow();
 
 // public methods //
@@ -158,7 +160,7 @@ GoogleMap = function()
 			status : obj.status,
 			time : obj.time,
 			inCircle : obj.inCircle,
-			icon : obj.status == 1 ? markerGreen : markerRed,
+			icon : obj.status == 1 ? markerOnline : markerOffline,
 			shadow : markerShadow,
 			visible : false,
 			position : new google.maps.LatLng(obj.lat, obj.lng)
@@ -197,7 +199,11 @@ GoogleMap = function()
 	{
 		google.maps.event.addListener(m, 'click', function(){
 			aMarker = m;
-			var offset = new google.maps.Size(-93, m.title == 'geoMarker' ? -90 : -110);
+			if (m.title == 'geoMarker'){
+				var offset = new google.maps.Size(-94, -91);
+			}	else{
+				var offset = new google.maps.Size(-92, -110);
+			}
 			var status = "<span style='color:"+(m.status==1 ? 'green' : 'red')+"'>"+(m.status==1 ? 'Status Online' : 'Status Offline')+"</span>";
 			$('#map_window #isp').html(m.isp + ' : '+status);
 			$('#map_window #time').html('Updated : ' + moment(parseInt(m.time)).fromNow());
