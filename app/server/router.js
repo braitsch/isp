@@ -16,6 +16,7 @@ module.exports = function(app) {
 			lng : req.param('lng'),
 			city : req.param('city'),
 			state : req.param('state'),
+			time : Date.now()
 		}, function(o){
 			if (o) res.send(o, 200);
 		});
@@ -34,12 +35,8 @@ module.exports = function(app) {
 	});
 
 	app.post('/get-isps', function(req, res){
-		DB.getIspsByCity(req.param('city'), function(loc){
-			if (loc == null){
-				res.send(null, 200);
-			}	else{
-				res.send(loc.isps, 200);
-			}
+		DB.getIspsByState(req.param('state'), function(loc){
+			res.send(loc.isps, 200);
 		})
 	});
 	

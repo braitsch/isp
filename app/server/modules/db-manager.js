@@ -5,7 +5,7 @@ var dbName = 'isp';
 var dbPort = 27017;
 var dbHost = global.host;
 
-var isps = require('./isps-by-city');
+var isps = require('./isps-by-state');
 var markers = require('./test-markers');
 
 var DBM = {};
@@ -34,15 +34,21 @@ DBM.setUser = function(newObj, callback)
 			oldObj.lng		= newObj.lng;
 			oldObj.city		= newObj.city;
 			oldObj.state	= newObj.state;
-			oldObj.time	 	= Date.now()
+			oldObj.time	 	= newObj.time;
 			DBM.markers.save(oldObj); callback(oldObj);
 		}
 	});
 }
 
-DBM.getIspsByCity = function(city, callback)
+DBM.getIspsByState = function(state, callback)
 {
-	DBM.isps.findOne({city : city}, function(e, res) { callback(res) });
+	DBM.isps.findOne({state : state}, function(e, res) { 
+		if (res != null){
+			callback(res);
+		}	else{
+			DBM.isps.findOne({state : 'California'}, function(e, res) { callback(res) });
+		}
+	});
 }
 
 DBM.getAllMarkers = function(callback)

@@ -60,9 +60,9 @@ $(document).ready(function(){
 		$.ajax({
 			url: '/get-isps',
 			type : "POST",
-			data : {city : loc.city},
+			data : {state : loc.state},
 			success: function(isps){
-				if (isps == null) isps = ['Comcast', 'AT&T', 'Verizon'];
+				console.log(isps)
 				mdl.setLocation(loc.city, loc.state, isps);
 			},
 			error: function(jqXHR){
