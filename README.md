@@ -8,4 +8,4 @@ Now you can, via your mobile, quickly check to see if others around you have als
 
 ![isp-status-image-preview](http://www.quietless.com/kitchen/wp-content/uploads/2012/07/isp-system-status.jpg "Internet System Status")
 
-More Coming Soon.
+[More details and the story behind this app on my blog.](http://www.quietless.com/kitchen/internet-service-provider-system-status/)
