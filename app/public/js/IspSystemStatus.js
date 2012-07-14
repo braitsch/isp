@@ -8,6 +8,8 @@ $(document).ready(function(){
 	
 	loc.getLocation(onLocationData);
 	
+	console.log(Date.now() - 1800000);
+	
 	mdl.addListener('onIspStatusChange', function(status, isp, isps){
 		drawISPList(isps);
 		onIspSelected(isp);
