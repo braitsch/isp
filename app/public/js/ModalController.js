@@ -11,7 +11,11 @@ ModalController = function()
 	w1.modal({ show : false, keyboard : false, backdrop : 'static' });
 	w2.modal({ show : false, keyboard : false, backdrop : 'static' });
 
-	var _isps, _status;
+	var selectIsp 	 = m1.find('#isp-select');
+	var selectStatus = m1.find('#isp-status');
+	var selectFilter = m1.find('#time-filter');
+
+	var _isp, _status, _isps, _filter = selectFilter.val();
 
 	this.showHome = function()
 	{
@@ -55,16 +59,20 @@ ModalController = function()
 	
 	var onWelcome2Complete = function()
 	{
-		var isp = $('#modal-wel2 select').val();
+		w2.modal('hide');
+		_isp = $('#modal-wel2 select').val();
 		var val = $('#modal-wel2 input').val();
 		val = capitalize(val.replace(/\W/ig, ''));
-		if (val) { isp = val; _isps.push(isp); }
-	// build the home list of isps //
-		$('#modal-home #isp-select').empty();
-		for (var i=0; i < _isps.length; i++) $('#modal-home #isp-select').append("<option>"+_isps[i]+"</option>");
-	// finally dispatch modal data back out to the rest of the application //
-		setStatusAndIsp(isp);
-		w2.modal('hide');
+		if (val) { _isp = val; _isps.push(_isp); }
+		dispatchStatusAndIsp();
+		setModalSettingsWindow();
+	}
+	
+	var setModalSettingsWindow = function()
+	{
+		for (var i=0; i < _isps.length; i++) selectIsp.append("<option>"+_isps[i]+"</option>");
+		selectIsp.val(_isp);
+		selectStatus.val(_status == 1 ? 'Online' : 'Offline');
 	}
 	
 	var capitalize = function(s)
@@ -72,20 +80,36 @@ ModalController = function()
 		return s.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
 	
-	var onIspAndStatusChange = function()
+	var onSettingsChange = function()
 	{
-		_status = $('#modal-home #isp-status').val() == 'Online' ? 1 : 0;
-		setStatusAndIsp($('#modal-home #isp-select').val());
+		var ispChanged, statusChanged;
+		if (selectIsp.val() != _isp){
+			ispChanged = true;
+			_isp = selectIsp.val();
+		}
+		var statusVal = selectStatus.val() == 'Online' ? 1 : 0;
+		if (statusVal != _status){
+			statusChanged = true;
+			_status = statusVal;
+		}
+		if (selectFilter.val() != _filter){
+			_filter = selectFilter.val();
+			dispatchFilterChange();
+		}
+		if (ispChanged || statusChanged) dispatchStatusAndIsp();
 	}
 
-	var setStatusAndIsp = function(isp)
+	var dispatchStatusAndIsp = function()
 	{
-		$('#modal-home #isp-select').val(isp);
-		$('#modal-home #isp-status').val(_status == 1 ? 'Online' : 'Offline');
-		dispatch('onIspStatusChange', [_status, isp, _isps]);
+		dispatch('onIspStatusChange', [_status, _isp, _isps]);
+	}
+	
+	var dispatchFilterChange = function()
+	{
+		dispatch('onTimeFilterChange', [_filter]);
 	}
 
-	m1.find('button').click(onIspAndStatusChange);
+	m1.find('button').click(onSettingsChange);
 	w1.find('button').click(onWelcome1Complete);
 	w2.find('#check-status').click(onWelcome2Complete);
 

@@ -45,6 +45,12 @@
 		select#isp-status
 			option Online
 			option Offline
+		h4 Show Results Within
+		select#time-filter
+			option Ten Minutes
+			option(selected='selected') One Hour
+			option One Day
+			option All Time
 	.modal-footer
 		button(data-dismiss='modal').btn.btn-success OK
 #modal-info.modal.hide

@@ -7,6 +7,7 @@ GoogleMap = function()
 	var markers = [];
 	var searchCircle;
 	var searchArea = 1; // 1 mile
+	var timeFilter = 3600000; // 1 hour
 	var mapMoveTimeout;
 		
 // create the map & info window //
@@ -101,6 +102,17 @@ GoogleMap = function()
 		ispName = isp;
 		drawMap();
 	}
+	
+	this.onTimeFilter = function(val)
+	{
+		switch(val){
+			case 'Ten Minutes' 	: timeFilter = 600000; break;
+			case 'One Hour' 	: timeFilter = 3600000; break;
+			case 'One Day' 		: timeFilter = 86400000; break;
+			case 'All Time' 	: timeFilter = Date.now(); break;
+		}
+		drawMap();
+	}
 
 	this.getMarkers = function()
 	{
@@ -127,9 +139,10 @@ GoogleMap = function()
 	
 	var drawMap = function()
 	{
+		var n = Date.now() - timeFilter;
 		for (var i = markers.length - 1; i >= 0; i--) {
-			markers[i].setVisible(markers[i].isp == ispName);
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
+			markers[i].setVisible(markers[i].isp == ispName && markers[i].time >= n);
 		}
 		win.hide(); tintSearchCircle();
 	}
@@ -137,7 +150,7 @@ GoogleMap = function()
 	var tintSearchCircle = function()
 	{
 		var a = [];
-		for (var i = markers.length - 1; i >= 0; i--) if (markers[i].inCircle && markers[i].isp == ispName) a.push(parseInt(markers[i].status));
+		for (var i = markers.length - 1; i >= 0; i--) if (markers[i].inCircle && markers[i].getVisible()) a.push(parseInt(markers[i].status));
 		var n = 0;
 		for (var i = a.length - 1; i >= 0; i--) n += a[i];
 		if (uMarker.isp != ispName){

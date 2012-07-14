@@ -15,6 +15,10 @@ $(document).ready(function(){
 		$('#header').show();
 	});
 	
+	mdl.addListener('onTimeFilterChange', function(val){
+		map.onTimeFilter(val);
+	});
+	
 	function onIspSelected(isp)
 	{
 		$('#isp-dropdown-label').text(isp);
