@@ -8,8 +8,6 @@ $(document).ready(function(){
 	
 	loc.getLocation(onLocationData);
 	
-	console.log(Date.now() - 1800000);
-	
 	mdl.addListener('onIspStatusChange', function(status, isp, isps){
 		drawISPList(isps);
 		onIspSelected(isp);
@@ -43,6 +41,7 @@ $(document).ready(function(){
 	function drawISPList(isps)
 	{
 		$('#isp-dropdown ul').empty();
+		$('#isp-dropdown ul').append("<li><a href='#'>All Providers</a></li><li class='divider'></li>");
 		for (var i=0; i < isps.length; i++) $('#isp-dropdown ul').append("<li><a href='#'>"+isps[i]+"</a></li>");
 	}
 

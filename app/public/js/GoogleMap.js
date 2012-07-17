@@ -7,7 +7,7 @@ GoogleMap = function()
 	var markers = [];
 	var searchCircle;
 	var searchArea = 1; // 1 mile
-	var timeFilter = 3600000; // 1 hour
+	var timeFilter = 86400000; // 1 day
 	var mapMoveTimeout;
 		
 // create the map & info window //
@@ -139,10 +139,15 @@ GoogleMap = function()
 	
 	var drawMap = function()
 	{
+		console.log(markers.length)
 		var n = Date.now() - timeFilter;
 		for (var i = markers.length - 1; i >= 0; i--) {
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());
-			markers[i].setVisible(markers[i].isp == ispName && markers[i].time >= n);
+			if (ispName == 'All Providers'){
+				markers[i].setVisible(markers[i].time >= n);
+			}	else{
+				markers[i].setVisible(markers[i].isp == ispName && markers[i].time >= n);
+			}
 		}
 		win.hide(); tintSearchCircle();
 	}
