@@ -42,7 +42,7 @@ DBM.setUser = function(newObj, callback)
 
 DBM.getIspsByState = function(state, callback)
 {
-	DBM.isps.findOne({state : state}, function(e, res) { 
+	DBM.isps.findOne({state : state}, function(e, res) {
 		if (res != null){
 			callback(res);
 		}	else{
@@ -54,6 +54,41 @@ DBM.getIspsByState = function(state, callback)
 DBM.getAllMarkers = function(callback)
 {
 	DBM.markers.find().sort({time : 1}).toArray( function(e, res) { callback(res) });
+}
+
+var analytics = [];
+var analyticsIndex = 0;
+var analyticsCallback = null;
+DBM.getAnalytics = function(callback)
+{
+	analytics = [];
+	analyticsIndex = 0;
+	analyticsCallback = callback;
+	DBM.getStatsOfIsp(isps[0].isps[0]);
+}
+
+DBM.onStatsReceived = function(obj)
+{
+	var k = isps[0].isps;
+	analytics.push(obj);
+	if (++analyticsIndex == k.length){
+		analyticsCallback(analytics);
+	}	else{
+		DBM.getStatsOfIsp(k[analyticsIndex]);
+	}
+}
+
+DBM.getStatsOfIsp = function(isp)
+{
+	DBM.markers.find({ isp : isp }, { status : 1 }).toArray( function(e, res) { 
+		var ok = 0, no = 0;
+		for (var i = res.length - 1; i >= 0; i--) res[i].status == 1 ? ok++ : no++;
+		if (res.length == 0){
+			ok = Math.ceil(Math.random()*10);
+			no = Math.ceil(Math.random()*10);
+		}
+		DBM.onStatsReceived({isp:isp, online:ok, offline:no, total:ok + no});
+	});
 }
 
 DBM.resetIsps = function(callback)

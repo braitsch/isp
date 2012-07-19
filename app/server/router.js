@@ -58,6 +58,12 @@ module.exports = function(app) {
 		});
 	});
 	
+	app.get('/data', function(req, res){
+		DB.getAnalytics(function(isps){
+			res.render('data', { title : 'ISP Uptime Stats', data : isps } );
+		})
+	});
+	
 	app.get('*', function(req, res){
 		res.render('404', {  title: '404!' });
 	});
