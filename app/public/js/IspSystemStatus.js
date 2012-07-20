@@ -62,7 +62,6 @@ $(document).ready(function(){
 	
 	function getLocationIsps()
 	{
-		console.log('country = ',loc.country); return;
 		$.ajax({
 			url: '/get-isps',
 			type : "POST",
