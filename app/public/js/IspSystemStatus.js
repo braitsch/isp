@@ -11,7 +11,7 @@ $(document).ready(function(){
 	mdl.addListener('onIspStatusChange', function(status, isp, isps){
 		drawISPList(isps);
 		onIspSelected(isp);
-		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng, city : loc.city, state : loc.state });
+		writeToDatabase({ isp : isp, status : status, lat : loc.lat, lng : loc.lng, city : loc.city, state : loc.state, country : loc.country });
 		$('#header').show();
 	});
 	
@@ -65,7 +65,7 @@ $(document).ready(function(){
 		$.ajax({
 			url: '/get-isps',
 			type : "POST",
-			data : {state : loc.state},
+			data : {country : loc.country},
 			success: function(isps){
 				mdl.setLocation(loc.city, loc.state, isps);
 			},

@@ -5,7 +5,7 @@ var dbName = 'isp';
 var dbPort = 27017;
 var dbHost = global.host;
 
-var isps = require('./isps-by-state');
+var isps = require('./isp-directory');
 var markers = require('./test-markers');
 
 var DBM = {};
@@ -34,19 +34,20 @@ DBM.setUser = function(newObj, callback)
 			oldObj.lng		= newObj.lng;
 			oldObj.city		= newObj.city;
 			oldObj.state	= newObj.state;
+			oldObj.country	= newObj.country;
 			oldObj.time	 	= newObj.time;
 			DBM.markers.save(oldObj); callback(oldObj);
 		}
 	});
 }
 
-DBM.getIspsByState = function(state, callback)
+DBM.getIspsByCountry = function(country, callback)
 {
-	DBM.isps.findOne({state : state}, function(e, res) {
+	DBM.isps.findOne({country : country}, function(e, res) {
 		if (res != null){
 			callback(res);
 		}	else{
-			DBM.isps.findOne({state : 'California'}, function(e, res) { callback(res) });
+			DBM.isps.findOne({country : 'default'}, function(e, res) { callback(res) });
 		}
 	});
 }
@@ -84,8 +85,8 @@ DBM.getStatsOfIsp = function(isp)
 		var ok = 0, no = 0;
 		for (var i = res.length - 1; i >= 0; i--) res[i].status == 1 ? ok++ : no++;
 		if (res.length == 0){
-			ok = Math.ceil(Math.random()*10);
-			no = Math.ceil(Math.random()*10);
+		//	ok = Math.ceil(Math.random()*10);
+		//	no = Math.ceil(Math.random()*10);
 		}
 		DBM.onStatsReceived({isp:isp, online:ok, offline:no, total:ok + no});
 	});
@@ -103,4 +104,9 @@ DBM.resetMarkers = function(callback)
 	DBM.markers.remove();
 	for (var i = markers.length - 1; i >= 0; i--) DBM.markers.insert(markers[i]);
 	callback();
+}
+
+DBM.clearZeros = function(callback)
+{
+	DBM.markers.remove({ ip : '0' }, callback);
 }

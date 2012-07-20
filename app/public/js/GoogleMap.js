@@ -38,12 +38,33 @@ GoogleMap = function()
 		fillOpacity: 0.25,
 		radius: GoogleMap.calcMilesToMeters(searchArea / 2)
 	});
+	
 	google.maps.event.addListener(win, 'click', function(e) { win.hide(); });
 	google.maps.event.addListener(map, 'click', function(e) { win.hide(); });
 	google.maps.event.addListener(searchCircle, 'click', function(e) { win.hide(); });
 
 // test-markers //
-	google.maps.event.addListener(map, 'click', function(e) {console.log(e.latLng.lat(), e.latLng.lng())});
+	// google.maps.event.addListener(map, 'click', function(e) {
+	// 	console.log(e.latLng.lat(), e.latLng.lng());
+	// 	var coder = new google.maps.Geocoder();
+	// 	var point = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+	// 	if (coder) {
+	// 		coder.geocode({'latLng': point }, function (results, status) {
+	// 			if (status == google.maps.GeocoderStatus.OK) {
+	// 				if (results[0]) {
+	// 					var a = results[0];
+	// 					for (var i = a.address_components.length - 1; i >= 0; i--){
+	// 						var n = a.address_components[i];
+	// 						console.log(n['long_name'], n['types'][0])
+	// //						if (n['types'][0] == 'administrative_area_level_1') _state = n['long_name'];
+	// //						if (n['types'][0] == 'administrative_area_level_3') _city = n['long_name'];
+	// //						if (n['types'][0] == 'administrative_area_level_2' && !_city) _city = n['long_name'];
+	// 					};
+	// 				} 
+	// 			} 
+	// 		});
+	// 	}		
+	// });
 
 // create colored markers & a shadow //
 	var drawMarker = function(v)
@@ -139,7 +160,6 @@ GoogleMap = function()
 	
 	var drawMap = function()
 	{
-		console.log(markers.length)
 		var n = Date.now() - timeFilter;
 		for (var i = markers.length - 1; i >= 0; i--) {
 			markers[i].inCircle = searchCircle.contains(markers[i].getPosition());

@@ -16,6 +16,7 @@ module.exports = function(app) {
 			lng : req.param('lng'),
 			city : req.param('city'),
 			state : req.param('state'),
+			country : req.param('country'),
 			time : Date.now()
 		}, function(o){
 			if (o) res.send(o, 200);
@@ -35,12 +36,12 @@ module.exports = function(app) {
 	});
 
 	app.post('/get-isps', function(req, res){
-		DB.getIspsByState(req.param('state'), function(loc){
+		DB.getIspsByCountry(req.param('country'), function(loc){
 			res.send(loc.isps, 200);
 		})
 	});
 	
-	app.get('/reset-locations', function(req, res){
+	app.get('/reset-isps', function(req, res){
 		DB.resetIsps(function(isps){
 			res.send('ok', 200);
 		})
@@ -62,6 +63,12 @@ module.exports = function(app) {
 		DB.getAnalytics(function(isps){
 			res.render('data', { title : 'ISP Uptime Stats', data : isps } );
 		})
+	});
+	
+	app.get('/clear', function(req, res){
+		DB.clearZeros(function(a, b){
+			res.redirect('/print-markers');
+		});
 	});
 	
 	app.get('*', function(req, res){

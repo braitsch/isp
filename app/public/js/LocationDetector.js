@@ -8,6 +8,7 @@ LocationDetector = function()
 	Object.defineProperty(this, "lng",			{ get: function() {return _lng;} 	});
 	Object.defineProperty(this, "city",			{ get: function() {return _city;} 	});
 	Object.defineProperty(this, "state",		{ get: function() {return _state;}	});
+	Object.defineProperty(this, "country",		{ get: function() {return _country;}});
 	
 	this.getLocation = function(callback)
 	{
@@ -42,9 +43,12 @@ LocationDetector = function()
 						var a = results[0];
 						for (var i = a.address_components.length - 1; i >= 0; i--){
 							var n = a.address_components[i];
+							if (n['types'][0] == 'country') _country = n['long_name'];
 							if (n['types'][0] == 'administrative_area_level_1') _state = n['long_name'];
+							if (n['types'][0] == 'administrative_area_level_2') _city = n['long_name'];
 							if (n['types'][0] == 'administrative_area_level_3') _city = n['long_name'];
-							if (n['types'][0] == 'administrative_area_level_2' && !_city) _city = n['long_name'];
+							if (n['types'][0] == 'locality') _city = n['long_name'];
+							if (n['types'][0] == 'sublocality') _city = n['long_name'];
 						};
 						_onComplete(true);
 					} else {
