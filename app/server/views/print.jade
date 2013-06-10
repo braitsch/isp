@@ -1,32 +1,36 @@
+extends layout
 
-body(style='background-color:white;')
-	div(style='margin:20px;')
-		#print-usrs
-			table.table.table-bordered.table-striped
-				thead
-					tr
-						th #
-						th Ip Address
-						th ISP
-						th Status
-						th Lat
-						th Lng
-						th City
-						th State
-						th Country
-						th Last Updated
-				tbody
-				- for (var i = users.length-1; i >= 0; i--)
-					tr
-						td= i+1
-						td= users[i].ip
-						td= users[i].isp
-						td= users[i].status
-						td= users[i].lat
-						td= users[i].lng
-						td= users[i].city
-						td= users[i].state
-						td= users[i].country
-						td= users[i].time
+block content
 
-script(src='/vendor/js/jquery-1.7.2.min.js')
+	body(style='background-color:white;')
+		div(style='margin:20px;')
+			#print-usrs
+				table.table.table-bordered.table-striped
+					thead
+						tr
+							th #
+							th Ip Address
+							th ISP
+							th Status
+							th Lat
+							th Lng
+							th City
+							th State
+							th Country
+							th Last Updated
+					tbody
+					- for (var i = users.length-1; i >= 0; i--)
+						tr
+							td= i+1
+							td= users[i].ip
+							td= users[i].isp
+							td= users[i].status
+							td= users[i].lat
+							td= users[i].lng
+							td= users[i].city
+							td= users[i].state
+							td= users[i].country
+							td= users[i].time
+
+block scripts
+	script(src='/vendor/js/jquery-1.7.2.min.js')

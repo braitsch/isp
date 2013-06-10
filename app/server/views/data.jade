@@ -1,10 +1,14 @@
 
-script
-	var isps =!{JSON.stringify(data)}
+extends layout
 
-body(style='background-color:white; overflow:hidden')
-	#svg-cnt(style='margin:20px;')
+block content
 
-script(src="http://d3js.org/d3.v2.js")
-script(src='/vendor/js/jquery-1.7.2.min.js')
-script(src='./js/IspDataVisuals.js')
+	body(style='background-color:white; overflow:hidden')
+		#svg-cnt(style='margin:20px;')
+
+block scripts
+	script
+			var isps =!{JSON.stringify(data)}
+	script(src="http://d3js.org/d3.v2.js")
+	script(src='/vendor/js/jquery-1.7.2.min.js')
+	script(src='./js/IspDataVisuals.js')

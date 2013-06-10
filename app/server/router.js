@@ -47,15 +47,9 @@ module.exports = function(app) {
 		})
 	});
 
-	app.get('/print-markers', function(req, res){
-		DB.getAllMarkers(function(markers){
-			res.render('print', { title : 'db-dump', users : markers } );
-		})
-	});
-
 	app.get('/reset-markers', function(req, res){
 		DB.resetMarkers(function(){
-			res.redirect('/print-markers');
+			res.redirect('/print');
 		});
 	});
 	
@@ -69,6 +63,12 @@ module.exports = function(app) {
 		DB.clearZeros(function(a, b){
 			res.redirect('/print-markers');
 		});
+	});
+	
+	app.get('/print', function(req, res){
+		DB.getAllMarkers(function(markers){
+			res.render('print', { title : 'db-dump', users : markers } );
+		})
 	});
 	
 	app.get('*', function(req, res){

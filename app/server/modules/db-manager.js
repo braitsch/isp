@@ -1,15 +1,16 @@
 
-var Db = require('mongodb').Db;
-var Server = require('mongodb').Server;
-var dbName = 'isp';
-var dbPort = 27017;
-var dbHost = global.host;
+var MongoDB		= require('mongodb').Db;
+var Server		= require('mongodb').Server;
 
-var isps = require('./isp-directory');
-var markers = require('./test-markers');
+var dbPort		= 27017;
+var dbHost		= global.host;
+var dbName		= 'isp';
+
+var isps		= require('./isp-directory');
+var markers		= require('./test-markers');
 
 var DBM = {};
-	DBM.db = new Db(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}, {}));
+	DBM.db = new MongoDB(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}), {w: 1});
 	DBM.db.open(function(e, d){
 		if (e) {
 			console.log(e);
@@ -26,7 +27,13 @@ DBM.setUser = function(newObj, callback)
 {
 	DBM.markers.findOne({ip:newObj.ip}, function(e, oldObj){
 		if (oldObj == null){
-			DBM.markers.insert(newObj, callback(newObj));
+			DBM.markers.insert(newObj, function(e, o){
+				if (!e){
+					callback(newObj);
+				}	else{
+					console.log('** error inserting new user**');
+				}
+			});
 		}	else{
 			oldObj.isp		= newObj.isp;
 			oldObj.status 	= newObj.status;
@@ -36,7 +43,13 @@ DBM.setUser = function(newObj, callback)
 			oldObj.state	= newObj.state;
 			oldObj.country	= newObj.country;
 			oldObj.time	 	= newObj.time;
-			DBM.markers.save(oldObj); callback(oldObj);
+			DBM.markers.save(oldObj, function(e, o){
+				if (!e){
+					callback(oldObj);
+				}	else{
+					console.log('** error updating user**');
+				}
+			});
 		}
 	});
 }
@@ -94,16 +107,18 @@ DBM.getStatsOfIsp = function(isp)
 
 DBM.resetIsps = function(callback)
 {
-	DBM.isps.remove();
-	for (var i = isps.length - 1; i >= 0; i--) DBM.isps.insert(isps[i]);
-	callback();
+	DBM.isps.remove({}, function(){
+		for (var i = isps.length - 1; i >= 0; i--) DBM.isps.insert(isps[i], function(e, o){ if (e) console.log('** error reseting isps**'); });
+		callback();
+	});
 }
 
 DBM.resetMarkers = function(callback)
 {
-	DBM.markers.remove();
-	for (var i = markers.length - 1; i >= 0; i--) DBM.markers.insert(markers[i]);
-	callback();
+	DBM.markers.remove({}, function(){
+		for (var i = markers.length - 1; i >= 0; i--) DBM.markers.insert(markers[i], function(e, o){ if (e) console.log('** error reseting markers**'); });
+		callback();
+	});
 }
 
 DBM.clearZeros = function(callback)
