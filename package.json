@@ -15,7 +15,8 @@
 		"express": "3.0.6",
 		"stylus": "0.31.0",
 		"jade": "0.27.7",
-		"mongodb": "1.2.7"
+		"mongodb": "1.2.7",
+		"moment": "2.0.0"
 	},
 	"engines": {
 		"node": "0.8.14",

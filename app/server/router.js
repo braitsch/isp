@@ -61,7 +61,7 @@ module.exports = function(app) {
 	
 	app.get('/clear', function(req, res){
 		DB.clearZeros(function(a, b){
-			res.redirect('/print-markers');
+			res.redirect('/print');
 		});
 	});
 	

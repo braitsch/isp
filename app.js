@@ -17,6 +17,7 @@ app.configure(function(){
 	app.set('views', __dirname + '/app/server/views');
 	app.set('view engine', 'jade');
 	app.locals.pretty = true;
+	app.locals.moment = require('moment');
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
