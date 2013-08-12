@@ -1,5 +1,6 @@
 
-var DB = require('./modules/db-manager');
+var exec	= require('child_process').exec;
+var DB		= require('./modules/db-manager');
 
 module.exports = function(app) {
 
@@ -69,6 +70,34 @@ module.exports = function(app) {
 		DB.getAllMarkers(function(markers){
 			res.render('print', { title : 'db-dump', users : markers } );
 		})
+	});
+	
+	/* DATABASE BACKUP & RESTORE */
+	
+	app.get('/backup', function(req, res){
+		console.log('** backing up database **');
+		exec('mongodump -d isp -o db-backups/', function(e, stdout, stderr) {
+			if (e) {
+				console.log(stderr);
+				res.send(e, 400);
+			}	else{
+				console.log(stdout);
+				res.redirect('/');
+			}
+		});
+	});
+	
+	app.get('/restore', function(req, res){
+		console.log('** restoring database **');
+		exec('mongorestore --drop db-backups/isp/', function(e, stdout, stderr) {
+			if (e) {
+				console.log(stderr);
+				res.send(e, 400);
+			}	else{
+				console.log(stdout);
+				res.redirect('/');
+			}
+		});
 	});
 	
 	app.get('*', function(req, res){
