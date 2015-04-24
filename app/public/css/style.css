@@ -86,7 +86,6 @@ html {
   -moz-box-shadow: 3px 3px 5px #888;
   -webkit-box-shadow: 3px 3px 5px #888;
   background: #f3961c;
-/* default background for browsers without gradient support */
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));
   background: -moz-linear-gradient(#f9d835, #f3961c);
   background: -o-linear-gradient(#f9d835, #f3961c);
@@ -96,11 +95,8 @@ html {
   content: "";
   position: absolute;
   bottom: -15px;
-/* value = - border-top-width - border-bottom-width */
   left: 80px;
-/* controls horizontal position */
   border-width: 15px 15px 0;
-/* vary these values to change the angle of the vertex */
   border-style: solid;
 /* reduce the damage in FF3.0 */
   display: block;
@@ -120,11 +116,8 @@ html {
   content: "";
   position: absolute;
   bottom: -15px;
-/* value = - border-top-width - border-bottom-width */
   left: 80px;
-/* controls horizontal position */
   border-width: 15px 15px 0;
-/* vary these values to change the angle of the vertex */
   border-style: solid;
 /* reduce the damage in FF3.0 */
   display: block;
@@ -191,7 +184,7 @@ svg {
 .labels text {
   fill: #4682b4;
 }
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
   .modal {
     width: 300px;
   }
