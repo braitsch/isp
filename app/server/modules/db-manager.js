@@ -2,9 +2,9 @@
 var MongoDB		= require('mongodb').Db;
 var Server		= require('mongodb').Server;
 
-var dbPort		= 27017;
-var dbHost		= global.host;
-var dbName		= 'isp';
+var dbName = process.env.DB_NAME || 'isp';
+var dbHost = process.env.DB_HOST || 'localhost'
+var dbPort = process.env.DB_PORT || 27017;
 
 var isps		= require('./isp-directory');
 var markers		= require('./test-markers');

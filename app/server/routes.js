@@ -11,40 +11,40 @@ module.exports = function(app) {
 	app.post('/user', function(req, res){
 		DB.setUser({
 			ip	: req.connection.remoteAddress,
-			isp : req.param('isp'),
-			status : req.param('status'),
-			lat : req.param('lat'),
-			lng : req.param('lng'),
-			city : req.param('city'),
-			state : req.param('state'),
-			country : req.param('country'),
+			isp : req.body['isp'],
+			status : req.body['status'],
+			lat : req.body['lat'],
+			lng : req.body['lng'],
+			city : req.body['city'],
+			state : req.body['state'],
+			country : req.body['country'],
 			time : Date.now()
 		}, function(o){
-			if (o) res.send(o, 200);
+			if (o) res.status(200).send(o);
 		});
 	})
 	
 	app.post('/get-markers', function(req, res){
-		var ne = req.param('ne');
-		var sw = req.param('sw');
+		var ne = req.body['ne'];
+		var sw = req.body['sw'];
 		DB.getAllMarkers(function(markers){
 			var a = [];
 			for (var i = markers.length - 1; i >= 0; i--) {
 				if (markers[i].ip != req.connection.remoteAddress) a.push(markers[i]);
 			}
-			res.send(a, 200);
+			res.status(200).send(a);
 		})
 	});
 
 	app.post('/get-isps', function(req, res){
-		DB.getIspsByCountry(req.param('country'), function(loc){
-			res.send(loc.isps, 200);
+		DB.getIspsByCountry(req.body['country'], function(loc){
+			res.status(200).send(loc.isps);
 		})
 	});
 	
 	app.get('/reset-isps', function(req, res){
 		DB.resetIsps(function(isps){
-			res.send('ok', 200);
+			res.status(200).send('ok');
 		})
 	});
 
@@ -79,7 +79,7 @@ module.exports = function(app) {
 		exec('mongodump -d isp -o ./root/db-backups/', function(e, stdout, stderr) {
 			if (e) {
 				console.log(stderr);
-				res.send(e, 400);
+				res.status(400).send(e);
 			}	else{
 				console.log(stdout);
 				res.redirect('/');
@@ -92,7 +92,7 @@ module.exports = function(app) {
 		exec('mongorestore --db isp --drop ./root/db-backups/isp/', function(e, stdout, stderr) {
 			if (e) {
 				console.log(stderr);
-				res.send(e, 400);
+				res.status(400).send(e);
 			}	else{
 				console.log(stdout);
 				res.redirect('/');

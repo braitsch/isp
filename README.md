@@ -6,6 +6,6 @@ You know how frustrating it is when your internet suddenly stops working and you
 
 Now you can, via your mobile, quickly check to see if others around you have also been bumped offline – negating the need to contact your ISP yourself to find out what's going on.
 
-![isp-status-image-preview](http://www.quietless.com/kitchen/wp-content/uploads/2012/07/isp-system-status.jpg "Internet System Status")
+![isp-status-image-preview](http://kitchen.braitsch.io/wp-content/uploads/2012/07/isp-system-status.jpg "Internet System Status")
 
-[More details and the story behind this app on my blog.](http://www.quietless.com/kitchen/internet-service-provider-system-status/)
+[More details and the story behind this app on my blog.](http://kitchen.braitsch.io/internet-service-provider-health-monitor/)
