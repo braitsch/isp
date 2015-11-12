@@ -11,6 +11,7 @@ var http = require('http').Server(app);
 var bodyParser = require("body-parser");
 
 app.locals.pretty = true;
+app.locals.moment = require('moment');
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'jade');
 app.set('views', './app/server/views');

@@ -14,6 +14,7 @@
 		"express": "4.13.3",
 		"jade": "1.11.0",
 		"stylus": "0.52.4",
+		"moment": "2.10.6",
 		"mongodb": "2.0.45",
 		"body-parser": "1.14.1"
 	},
