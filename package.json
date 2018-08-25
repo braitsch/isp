@@ -1,9 +1,9 @@
 {
 	"name": "isp-system-status",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"description": "Publicly Sourced Realtime Visualization of ISP System Status in Your Area",
 	"author": "Stephen Braitsch <stephen@braitsch.io>",
-	"website":{
+	"website": {
 		"url": "http://isp.braitsch.io"
 	},
 	"repository": {
@@ -11,12 +11,12 @@
 		"url": "git@github.com:braitsch/isp.git"
 	},
 	"dependencies": {
-		"express": "4.13.3",
-		"jade": "1.11.0",
-		"stylus": "0.52.4",
-		"moment": "2.10.6",
-		"mongodb": "2.0.45",
-		"body-parser": "1.14.1"
+		"body-parser": "1.18.3",
+		"express": "4.16.3",
+		"moment": "2.22.2",
+		"mongodb": "3.1.4",
+		"pug": "^2.0.3",
+		"stylus": "0.54.5"
 	},
 	"engines": {
 		"node": "4.2.1"

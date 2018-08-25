@@ -76,7 +76,7 @@ module.exports = function(app) {
 	
 	app.get('/backup', function(req, res){
 		console.log('** backing up database **');
-		exec('mongodump -d isp -o ./root/db-backups/', function(e, stdout, stderr) {
+		exec('mongodump -d isp -o ./db-backups/', function(e, stdout, stderr) {
 			if (e) {
 				console.log(stderr);
 				res.status(400).send(e);
@@ -89,7 +89,7 @@ module.exports = function(app) {
 	
 	app.get('/restore', function(req, res){
 		console.log('** restoring database **');
-		exec('mongorestore --db isp --drop ./root/db-backups/isp/', function(e, stdout, stderr) {
+		exec('mongorestore --db isp --drop ./db-backups/isp/', function(e, stdout, stderr) {
 			if (e) {
 				console.log(stderr);
 				res.status(400).send(e);

@@ -77,6 +77,7 @@ GoogleMap = function()
 		);
 	}
 	var drawMarkerShadow = function(){
+
 		return new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
 		new google.maps.Size(40, 37),
 			new google.maps.Point(0, 0),

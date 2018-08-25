@@ -1,25 +1,23 @@
 
-var MongoDB		= require('mongodb').Db;
-var Server		= require('mongodb').Server;
+const isps = require('./isp-directory');
+const markers = require('./test-markers');
+const MongoClient = require('mongodb').MongoClient;
 
-var dbName = process.env.DB_NAME || 'isp';
-var dbHost = process.env.DB_HOST || 'localhost'
-var dbPort = process.env.DB_PORT || 27017;
-
-var isps		= require('./isp-directory');
-var markers		= require('./test-markers');
+const dbName = process.env.DB_NAME || 'isp';
+const dbHost = process.env.DB_HOST || 'localhost'
+const dbPort = process.env.DB_PORT || 27017;
 
 var DBM = {};
-	DBM.db = new MongoDB(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}), {w: 1});
-	DBM.db.open(function(e, d){
-		if (e) {
-			console.log(e);
-		}	else{
-			console.log('connected to database :: ' + dbName);
-		}
-	});
-	DBM.isps = DBM.db.collection('isps');
-	DBM.markers = DBM.db.collection('markers');
+MongoClient.connect('mongodb://' + dbHost + ':' + dbPort, {useNewUrlParser: true}, function(e, client) {
+	if (e){
+		console.log(e);
+	}	else{
+		DBM.db = client.db(dbName);
+		DBM.isps = DBM.db.collection('isps');
+		DBM.markers = DBM.db.collection('markers');
+		console.log('mongo :: connected to database :: "'+dbName+'"');
+	}
+});
 
 module.exports = DBM;
 
@@ -27,7 +25,7 @@ DBM.setUser = function(newObj, callback)
 {
 	DBM.markers.findOne({ip:newObj.ip}, function(e, oldObj){
 		if (oldObj == null){
-			DBM.markers.insert(newObj, function(e, o){
+			DBM.markers.insertOne(newObj, function(e, o){
 				if (!e){
 					callback(newObj);
 				}	else{
@@ -35,15 +33,7 @@ DBM.setUser = function(newObj, callback)
 				}
 			});
 		}	else{
-			oldObj.isp		= newObj.isp;
-			oldObj.status 	= newObj.status;
-			oldObj.lat		= newObj.lat;
-			oldObj.lng		= newObj.lng;
-			oldObj.city		= newObj.city;
-			oldObj.state	= newObj.state;
-			oldObj.country	= newObj.country;
-			oldObj.time	 	= newObj.time;
-			DBM.markers.save(oldObj, function(e, o){
+			DBM.markers.replaceOne(oldObj, newObj, function(e, o){
 				if (!e){
 					callback(oldObj);
 				}	else{
@@ -107,21 +97,21 @@ DBM.getStatsOfIsp = function(isp)
 
 DBM.resetIsps = function(callback)
 {
-	DBM.isps.remove({}, function(){
-		for (var i = isps.length - 1; i >= 0; i--) DBM.isps.insert(isps[i], function(e, o){ if (e) console.log('** error reseting isps**'); });
+	DBM.isps.deleteMany({}, function(){
+		for (var i = isps.length - 1; i >= 0; i--) DBM.isps.insertMany(isps[i], function(e, o){ if (e) console.log('** error reseting isps**'); });
 		callback();
 	});
 }
 
 DBM.resetMarkers = function(callback)
 {
-	DBM.markers.remove({}, function(){
-		for (var i = markers.length - 1; i >= 0; i--) DBM.markers.insert(markers[i], function(e, o){ if (e) console.log('** error reseting markers**'); });
+	DBM.markers.deleteMany({}, function(){
+		for (var i = markers.length - 1; i >= 0; i--) DBM.markers.insertMany(markers[i], function(e, o){ if (e) console.log('** error reseting markers**'); });
 		callback();
 	});
 }
 
 DBM.clearZeros = function(callback)
 {
-	DBM.markers.remove({ ip : '0' }, callback);
+	DBM.markers.deleteMany({ ip : '0' }, callback);
 }

@@ -70,7 +70,7 @@ $(document).ready(function(){
 				mdl.setLocation(loc.city, loc.state, isps);
 			},
 			error: function(jqXHR){
-				console.log('error', jqXHR.responseText+' :: '+jqXHR.statusText);
+				console.log('error: unable to getISPs', jqXHR.responseText+' :: '+jqXHR.statusText);
 			}
 		});
 	}
