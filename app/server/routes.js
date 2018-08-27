@@ -42,16 +42,15 @@ module.exports = function(app) {
 		})
 	});
 	
-	app.get('/reset-isps', function(req, res){
+	app.get('/reset', function(req, res){
+		console.log('resetting isps & markers in database');
 		DB.resetIsps(function(isps){
-			res.status(200).send('ok');
+			console.log('isps reset!');
+			DB.resetMarkers(function(){
+				console.log('markers reset!');
+				res.redirect('/print');
+			})
 		})
-	});
-
-	app.get('/reset-markers', function(req, res){
-		DB.resetMarkers(function(){
-			res.redirect('/print');
-		});
 	});
 	
 	app.get('/data', function(req, res){
