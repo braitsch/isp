@@ -98,7 +98,7 @@ DBM.getStatsOfIsp = function(isp)
 DBM.resetIsps = function(callback)
 {
 	DBM.isps.deleteMany({}, function(){
-		for (var i = isps.length - 1; i >= 0; i--) DBM.isps.insertMany(isps[i], function(e, o){ if (e) console.log('** error reseting isps**'); });
+		DBM.isps.insertMany(isps, function(e, o){ if (e) console.log('** error reseting isps**'); });
 		callback();
 	});
 }
@@ -106,7 +106,7 @@ DBM.resetIsps = function(callback)
 DBM.resetMarkers = function(callback)
 {
 	DBM.markers.deleteMany({}, function(){
-		for (var i = markers.length - 1; i >= 0; i--) DBM.markers.insertMany(markers[i], function(e, o){ if (e) console.log('** error reseting markers**'); });
+		DBM.markers.insertMany(markers, function(e, o){ if (e) console.log('** error reseting markers**'); });
 		callback();
 	});
 }

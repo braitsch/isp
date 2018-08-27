@@ -45,9 +45,7 @@ module.exports = function(app) {
 	app.get('/reset', function(req, res){
 		console.log('resetting isps & markers in database');
 		DB.resetIsps(function(isps){
-			console.log('isps reset!');
 			DB.resetMarkers(function(){
-				console.log('markers reset!');
 				res.redirect('/print');
 			})
 		})
